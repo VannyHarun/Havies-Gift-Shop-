@@ -6,73 +6,38 @@
   <meta name="theme-color" content="#db2777">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Havie's Gift Shop">
-  <link rel="icon" type="image/jpeg" href="public/products/flavie_logo.jpg">
+  <link rel="manifest" id="app-manifest">
+  <link rel="icon" type="image/svg+xml" href="public/havies-icon.svg">
+  <link rel="stylesheet" id="standalone-styles">
   <title>Havie's Gift Shop | Official Online Catalog</title>
   <meta name="description" content="Gift ideas, custom gift branding, flower bouquets, and gift delivery services at Katani Road, Kenya. WhatsApp +254 745 731 397.">
 
-  <!-- Google Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Plus Jakarta Sans', 'sans-serif'],
-            serif: ['Playfair Display', 'serif'],
-          },
-          colors: {
-            pink: {
-              50:'#fdf2f8',100:'#fce7f3',200:'#fbcfe8',300:'#f9a8d4',
-              400:'#f472b6',500:'#ec4899',600:'#db2777',700:'#be185d',
-              800:'#9d174d',900:'#831843',
-            }
-          }
-        }
-      }
-    }
+    const SITE_BASE_URL = '%BASE_URL%';
+    const APP_ASSET_BASE = location.protocol === 'file:' ? './public/' : SITE_BASE_URL;
+    document.getElementById('app-manifest').href = `${APP_ASSET_BASE}manifest-standalone.json`;
+    document.getElementById('standalone-styles').href = `${APP_ASSET_BASE}standalone.css`;
+    document.querySelector('link[rel="icon"]').href = `${APP_ASSET_BASE}havies-icon.svg`;
+    document.write([
+      'vendor/react.production.min.js',
+      'vendor/react-dom.production.min.js',
+      'vendor/babel.min.js'
+    ].map(path => `<script src="${APP_ASSET_BASE}${path}"><\/script>`).join(''));
   </script>
-
-  <!-- React & ReactDOM UMD -->
-  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-  <!-- Babel Standalone (for JSX) -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-  <style>
-    :root { --pink: #db2777; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fdf2f8; }
-    .hide-scrollbar::-webkit-scrollbar { display: none; }
-    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    img { image-rendering: -webkit-optimize-contrast; }
-    .product-img { object-fit: cover; transition: transform 0.4s ease; }
-    .card:hover .product-img { transform: scale(1.07); }
-    .card { transition: box-shadow 0.25s, transform 0.25s; }
-    .card:hover { box-shadow: 0 20px 40px rgba(219,39,119,0.18); transform: translateY(-3px); }
-    .btn-wa { background: #25D366; }
-    .btn-wa:hover { background: #1ebe5d; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
-    .fade-in { animation: fadeIn 0.35s ease both; }
-    @keyframes spinPulse { 0%,100%{transform:scale(1)}50%{transform:scale(1.15)} }
-    .spin-pulse { animation: spinPulse 1.5s infinite; }
-  </style>
 </head>
 <body>
 <div id="root"></div>
 
 <script type="text/babel">
 const { useState, useEffect, useRef, useCallback } = React;
-const SITE_BASE_URL = '%BASE_URL%';
+const ADMIN_PASSWORD_KEY = 'havies_admin_password';
+const ADMIN_PASSWORD_EXPIRY_KEY = 'havies_admin_password_expires_at';
+const DEFAULT_ADMIN_PASSWORD = '123';
+const ADMIN_PASSWORD_LIFETIME = 14 * 24 * 60 * 60 * 1000;
 function publicAssetUrl(path) {
   if (location.protocol === 'file:' || /^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(path)) return path;
   return `${SITE_BASE_URL}${path.replace(/^(?:public\/|\/)+/, '')}`;
 }
-const favicon = document.querySelector('link[rel="icon"]');
-if (favicon) favicon.href = publicAssetUrl('public/products/flavie_logo.jpg');
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 const PRODUCTS = [
@@ -1908,7 +1873,22 @@ function waLink(msg) { return `https://wa.me/${WA_NUMBER}?text=${encodeURICompon
 function starStr(r) { return "★".repeat(Math.round(r)) + "☆".repeat(5 - Math.round(r)); }
 // ── Cart atom ─────────────────────────────────────────────────────────────────
 function useCart() {
-  const [cart, setCart] = useState([]);
+  const [cart, setCart] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('havies_cart') || '[]');
+      return Array.isArray(saved) ? saved : [];
+    } catch (error) {
+      console.error('Could not restore saved cart', error);
+      return [];
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem('havies_cart', JSON.stringify(cart));
+    } catch (error) {
+      console.error('Could not save cart for offline use', error);
+    }
+  }, [cart]);
   const add = useCallback((p, qty=1) => {
     setCart(c => {
       const ex = c.find(x=>x.id===p.id);
@@ -1925,13 +1905,28 @@ function useCart() {
 
 // ── Wishlist atom ─────────────────────────────────────────────────────────────
 function useWish() {
-  const [wish, setWish] = useState(new Set());
+  const [wish, setWish] = useState(() => {
+    try {
+      const saved = JSON.parse(localStorage.getItem('havies_wishlist') || '[]');
+      return new Set(Array.isArray(saved) ? saved : []);
+    } catch (error) {
+      console.error('Could not restore saved wishlist', error);
+      return new Set();
+    }
+  });
+  useEffect(() => {
+    try {
+      localStorage.setItem('havies_wishlist', JSON.stringify([...wish]));
+    } catch (error) {
+      console.error('Could not save wishlist for offline use', error);
+    }
+  }, [wish]);
   const toggle = id => setWish(w => { const n=new Set(w); n.has(id)?n.delete(id):n.add(id); return n; });
   return { wish, toggle };
 }
 
 // ── Header ────────────────────────────────────────────────────────────────────
-function Header({ cartCount, onCart, onAdmin, search, setSearch }) {
+function Header({ cartCount, onCart, onAdmin, onInstall, search, setSearch }) {
   return (
     <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-pink-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
@@ -1949,6 +1944,12 @@ function Header({ cartCount, onCart, onAdmin, search, setSearch }) {
             className="w-full border border-pink-200 rounded-full px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-pink-400"
           />
         </div>
+        <button onClick={onInstall}
+          className="rounded-full bg-pink-50 px-3 py-2 text-xs font-bold text-pink-700 hover:bg-pink-100 transition"
+          title="Install Havie's Gift Shop for offline use"
+        >
+          📲 <span className="hidden sm:inline">Install</span>
+        </button>
         <button onClick={onCart}
           className="relative p-2 rounded-full bg-pink-600 text-white hover:bg-pink-700 transition"
           title="View Cart"
@@ -1985,28 +1986,69 @@ function AdminPanel({ products, orders, onAddProduct, onDeleteProduct, onAddOrde
   const [newPassword, setNewPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
   const [error, setError] = useState('');
+  const [passwordExpired, setPasswordExpired] = useState(() => {
+    const savedPassword = localStorage.getItem(ADMIN_PASSWORD_KEY);
+    if (!savedPassword) return false;
+    const expiresAt = Number(localStorage.getItem(ADMIN_PASSWORD_EXPIRY_KEY));
+    return !expiresAt || expiresAt <= Date.now();
+  });
   const [form, setForm] = useState({ name: '', category: 'drinkware', price: '', image: '', description: '', unit: 'Piece' });
   const [orderForm, setOrderForm] = useState({ customer: '', phone: '', productId: '', quantity: '1', status: 'pending' });
-  const hasPassword = Boolean(localStorage.getItem('havies_admin_password'));
+  const storedPassword = localStorage.getItem(ADMIN_PASSWORD_KEY);
+  const hasPassword = Boolean(storedPassword);
+
+  useEffect(() => {
+    if (!authenticated) return undefined;
+    const expiresAt = Number(localStorage.getItem(ADMIN_PASSWORD_EXPIRY_KEY));
+    const remaining = expiresAt - Date.now();
+    if (!expiresAt || remaining <= 0) {
+      setAuthenticated(false);
+      setPasswordExpired(true);
+      return undefined;
+    }
+
+    const expirationTimer = window.setTimeout(() => {
+      setAuthenticated(false);
+      setPasswordExpired(true);
+      setPassword('');
+      setError('Your admin password expired. Sign in and choose a new password.');
+    }, remaining);
+    return () => window.clearTimeout(expirationTimer);
+  }, [authenticated]);
 
   const handleAccess = event => {
     event.preventDefault();
     if (!hasPassword) {
-      if (newPassword.trim().length < 8) {
-        setError('Choose a password with at least 8 characters.');
+      if (password !== DEFAULT_ADMIN_PASSWORD) {
+        setError('The initial admin password is 123.');
         return;
       }
-      localStorage.setItem('havies_admin_password', newPassword);
+      localStorage.setItem(ADMIN_PASSWORD_KEY, DEFAULT_ADMIN_PASSWORD);
+      localStorage.setItem(ADMIN_PASSWORD_EXPIRY_KEY, String(Date.now() + ADMIN_PASSWORD_LIFETIME));
       setAuthenticated(true);
       setError('');
       return;
     }
-    if (password === localStorage.getItem('havies_admin_password')) {
+    if (password !== storedPassword) {
+      setError('That password is not correct.');
+      return;
+    }
+    if (passwordExpired) {
+      if (newPassword.trim().length < 8) {
+        setError('Your password expired. Choose a new password with at least 8 characters.');
+        return;
+      }
+      localStorage.setItem(ADMIN_PASSWORD_KEY, newPassword);
+      localStorage.setItem(ADMIN_PASSWORD_EXPIRY_KEY, String(Date.now() + ADMIN_PASSWORD_LIFETIME));
+      setPasswordExpired(false);
+      setPassword('');
+      setNewPassword('');
       setAuthenticated(true);
       setError('');
-    } else {
-      setError('That password is not correct.');
+      return;
     }
+    setAuthenticated(true);
+    setError('');
   };
 
   const handleAdd = event => {
@@ -2074,16 +2116,21 @@ function AdminPanel({ products, orders, onAddProduct, onDeleteProduct, onAddOrde
 
         {!authenticated ? (
           <form onSubmit={handleAccess} className="p-5 sm:p-7 max-w-md mx-auto space-y-4">
-            <h3 className="font-semibold text-gray-800">{hasPassword ? 'Admin sign in' : 'Set your admin password'}</h3>
-            <p className="text-sm text-gray-500">{hasPassword ? 'Enter your shop admin password to manage products.' : 'Create a password of at least 8 characters. Keep it private.'}</p>
-            {!hasPassword ? (
-              <input autoComplete="new-password" type="password" minLength="8" required value={newPassword} onChange={event => setNewPassword(event.target.value)} placeholder="Create password" className="w-full border border-pink-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400" />
-            ) : (
-              <input autoComplete="current-password" type="password" required value={password} onChange={event => setPassword(event.target.value)} placeholder="Admin password" className="w-full border border-pink-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            <h3 className="font-semibold text-gray-800">{passwordExpired ? 'Reset expired admin password' : 'Admin sign in'}</h3>
+            <p className="text-sm text-gray-500">
+              {!hasPassword
+                ? 'Use the initial admin password 123. You will need to change it after 14 days.'
+                : passwordExpired
+                ? 'Your password expired. Enter your current password and choose a new one.'
+                : 'Enter your shop admin password to manage products.'}
+            </p>
+            <input autoComplete="current-password" type="password" required value={password} onChange={event => setPassword(event.target.value)} placeholder={hasPassword ? 'Current admin password' : 'Initial password'} className="w-full border border-pink-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            {passwordExpired && hasPassword && (
+              <input autoComplete="new-password" type="password" minLength="8" required value={newPassword} onChange={event => setNewPassword(event.target.value)} placeholder="New password (at least 8 characters)" className="w-full border border-pink-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400" />
             )}
             {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
-            <button type="submit" className="w-full rounded-lg bg-pink-700 hover:bg-pink-800 text-white font-bold py-2.5">{hasPassword ? 'Sign in' : 'Set password'}</button>
-            <p className="text-xs text-gray-400">This password is stored in this browser and is not server-side security.</p>
+            <button type="submit" className="w-full rounded-lg bg-pink-700 hover:bg-pink-800 text-white font-bold py-2.5">{passwordExpired ? 'Reset password' : 'Sign in'}</button>
+            <p className="text-xs text-gray-400">Password is stored locally in this browser and is not server-side security. Do not use this admin to protect sensitive information.</p>
           </form>
         ) : (
           <div className="p-5 sm:p-6 space-y-7">
@@ -2455,6 +2502,10 @@ function Footer() {
 
 // ── Main App ──────────────────────────────────────────────────────────────────
 function App() {
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [offlineReady, setOfflineReady] = useState(false);
+  const [offlineSetupFailed, setOfflineSetupFailed] = useState(false);
   const [products, setProducts] = useState(() => {
     try {
       const saved = localStorage.getItem('havies_products');
@@ -2491,6 +2542,40 @@ function App() {
   const timerRef = useRef(null);
 
   useEffect(() => {
+    const handleOnline = () => setIsOnline(true);
+    const handleOffline = () => setIsOnline(false);
+    const handleInstallPrompt = event => {
+      event.preventDefault();
+      setInstallPrompt(event);
+    };
+    const handleAppInstalled = () => setInstallPrompt(null);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    window.addEventListener('beforeinstallprompt', handleInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
+    if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+      navigator.serviceWorker.register(`${APP_ASSET_BASE}sw.js`, { scope: APP_ASSET_BASE })
+        .then(() => navigator.serviceWorker.ready)
+        .then(() => setOfflineReady(true))
+        .catch(error => {
+          console.error('Could not prepare the offline shop app', error);
+          setOfflineSetupFailed(true);
+        });
+    } else {
+      setOfflineSetupFailed(true);
+    }
+
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+      window.removeEventListener('beforeinstallprompt', handleInstallPrompt);
+      window.removeEventListener('appinstalled', handleAppInstalled);
+    };
+  }, []);
+
+  useEffect(() => {
     try {
       localStorage.setItem('havies_products', JSON.stringify(products));
     } catch (error) {
@@ -2519,6 +2604,18 @@ function App() {
     setToast(msg);
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => setToast(''), 2200);
+  };
+
+  const handleInstall = async () => {
+    if (!installPrompt) {
+      showToast('Use your browser menu and choose Install app or Add to Home Screen.');
+      return;
+    }
+
+    await installPrompt.prompt();
+    const choice = await installPrompt.userChoice;
+    if (choice.outcome === 'accepted') showToast('Havie’s Gift Shop app installed.');
+    setInstallPrompt(null);
   };
 
   const handleAdd = p => {
@@ -2559,7 +2656,14 @@ function App() {
 
   return (
     <div className="min-h-screen bg-pink-50">
-      <Header cartCount={count} onCart={()=>setShowCart(true)} onAdmin={()=>setShowAdmin(true)} search={search} setSearch={setSearch}/>
+      <Header cartCount={count} onCart={()=>setShowCart(true)} onAdmin={()=>setShowAdmin(true)} onInstall={handleInstall} search={search} setSearch={setSearch}/>
+      <div className={`px-4 py-1.5 text-center text-xs font-semibold ${!isOnline ? 'bg-amber-100 text-amber-900' : 'bg-pink-100 text-pink-800'}`} role="status" aria-live="polite">
+        {offlineSetupFailed
+          ? 'Offline setup is unavailable here. Open the hosted shop online in a supported browser to save it.'
+          : !isOnline
+          ? offlineReady ? 'Offline mode — saved catalog is ready.' : 'Offline mode — open the shop online once to save it for offline use.'
+          : offlineReady ? 'Offline catalog ready on this device.' : 'Preparing offline catalog — keep the shop open while it saves.'}
+      </div>
       <Hero/>
       <CategoryTabs active={category} setActive={setCategory}/>
 

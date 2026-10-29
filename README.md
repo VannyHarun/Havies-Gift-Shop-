@@ -58,14 +58,19 @@ An interactive, high-converting marketing website and installable Progressive We
 
 ## 🚀 How to Open and Run
 
-### Instant Browser Launch (No Installation Required)
-Double-click:
-👉 **[`open-flavies-store.bat`](file:///C:/Users/HARUN/Desktop/aura-fashion-store/open-flavies-store.bat)**
+### Open the standalone shop
 
-Or open directly in any browser:
-👉 **[`index-standalone.html`](file:///C:/Users/HARUN/Desktop/aura-fashion-store/index-standalone.html)**
+Visit the hosted standalone shop at `https://vannyharun.github.io/Havies-Gift-Shop-/index-standalone.html`.
 
-### Facebook
+### Use the shop offline
+
+1. Open the hosted standalone shop while connected to the internet: `https://vannyharun.github.io/Havies-Gift-Shop-/index-standalone.html`.
+2. Keep the page open until it says **Offline catalog ready on this device**. This saves the shop, its product images, and app files to that browser.
+3. Select **Install** (or use the browser menu and choose **Install app** / **Add to Home Screen**). After setup, the catalog, cart, and wishlist work without data on that same device and browser.
+
+The initial admin password is `123`. After 14 days, the admin must sign in with the current password and set a new password of at least eight characters. This password is stored only in the browser and is not server-side security. WhatsApp ordering still needs an internet connection.
+
+## Facebook
 - Use the Facebook button in the site navigation or footer to visit the shop's Facebook profile.
 
 ## Deploy to GitHub Pages

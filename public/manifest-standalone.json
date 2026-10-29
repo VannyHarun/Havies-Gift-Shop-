@@ -1,0 +1,20 @@
+{
+  "id": "./index-standalone.html",
+  "short_name": "Havie's Shop",
+  "name": "Havie's Gift Shop",
+  "description": "Browse the Havie's Gift Shop catalog and prepare orders offline.",
+  "start_url": "./index-standalone.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fdf2f8",
+  "theme_color": "#db2777",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "havies-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
