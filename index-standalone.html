@@ -437,6 +437,44 @@ const PRODUCTS = [
     "description": "Official Havie's Gift Shop catalog product (Article #018). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
   },
   {
+    "id": "shared-pu-leather-bag",
+    "sku": "PU-BAG-1499",
+    "name": "PU Leather Designer Bag",
+    "category": "bags",
+    "price": 1499,
+    "unit": "Piece",
+    "rating": 0,
+    "reviews": 0,
+    "badge": "New",
+    "image": "public/products/shared-handbags.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "Multiple colors as shown"
+    ],
+    "description": "PU leather designer bag with a chain strap. Multiple colors are available as shown in the product photo."
+  },
+  {
+    "id": "shared-mini-push-lock-handbag",
+    "sku": "MINI-PUSH-LOCK-1799",
+    "name": "Mini Push Lock Handbag",
+    "category": "bags",
+    "price": 1799,
+    "unit": "Piece",
+    "rating": 0,
+    "reviews": 0,
+    "badge": "New",
+    "image": "public/products/shared-handbags.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "Multiple colors as shown"
+    ],
+    "description": "Mini push-lock handbag with a chain strap. Multiple colors are available as shown in the product photo."
+  },
+  {
     "id": "art-019",
     "sku": "ART-019",
     "name": "Clutch Ball Spherical Bags",
@@ -2421,7 +2459,15 @@ function App() {
     try {
       const saved = localStorage.getItem('havies_products');
       const parsed = saved ? JSON.parse(saved) : null;
-      return Array.isArray(parsed) ? parsed : PRODUCTS;
+      if (!Array.isArray(parsed)) return PRODUCTS;
+
+      const newHandbags = PRODUCTS.filter(product =>
+        ['shared-pu-leather-bag', 'shared-mini-push-lock-handbag'].includes(product.id)
+      );
+      return [
+        ...parsed,
+        ...newHandbags.filter(product => !parsed.some(savedProduct => savedProduct.id === product.id))
+      ];
     } catch {
       return PRODUCTS;
     }

@@ -497,6 +497,58 @@ export const PRODUCTS = [
     "description": "Authentic item from Flavie's Gift Shop catalog (Article #018). Unit: Piece. Immediate WhatsApp ordering & doorstep delivery across Kenya."
   },
   {
+    "id": "shared-pu-leather-bag",
+    "sku": "PU-BAG-1499",
+    "name": "PU Leather Designer Bag",
+    "category": "bags",
+    "price": 1499,
+    "unit": "Piece",
+    "rating": 0,
+    "reviewsCount": 0,
+    "badge": "New",
+    "badgeType": "gold",
+    "images": [
+      "/products/shared-handbags.jpg"
+    ],
+    "sizes": [
+      "Standard / Piece"
+    ],
+    "colors": [
+      {
+        "name": "Multiple colors as shown",
+        "hex": "#8b5e3c"
+      }
+    ],
+    "inStock": true,
+    "description": "PU leather designer bag with a chain strap. Multiple colors are available as shown in the product photo."
+  },
+  {
+    "id": "shared-mini-push-lock-handbag",
+    "sku": "MINI-PUSH-LOCK-1799",
+    "name": "Mini Push Lock Handbag",
+    "category": "bags",
+    "price": 1799,
+    "unit": "Piece",
+    "rating": 0,
+    "reviewsCount": 0,
+    "badge": "New",
+    "badgeType": "gold",
+    "images": [
+      "/products/shared-handbags.jpg"
+    ],
+    "sizes": [
+      "Standard / Piece"
+    ],
+    "colors": [
+      {
+        "name": "Multiple colors as shown",
+        "hex": "#8b5e3c"
+      }
+    ],
+    "inStock": true,
+    "description": "Mini push-lock handbag with a chain strap. Multiple colors are available as shown in the product photo."
+  },
+  {
     "id": "art-019",
     "sku": "ART-019",
     "name": "Clutch Ball Spherical Bags",
