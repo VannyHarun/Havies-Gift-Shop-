@@ -1,0 +1,728 @@
+[
+  {
+    "art": 1,
+    "name": "Cola Thermos Flask (500ml)",
+    "category": "drinkware",
+    "price": 800,
+    "unit": "Piece",
+    "img": "article_001.jpg"
+  },
+  {
+    "art": 2,
+    "name": "Water Bottle (600ml)",
+    "category": "drinkware",
+    "price": 750,
+    "unit": "Piece",
+    "img": "article_002.jpg"
+  },
+  {
+    "art": 3,
+    "name": "Long Tumbler (White & Pink, 560ml)",
+    "category": "drinkware",
+    "price": 1110,
+    "unit": "Piece",
+    "img": "article_003.jpg"
+  },
+  {
+    "art": 4,
+    "name": "Fancy Straw Tumblers",
+    "category": "drinkware",
+    "price": 1150,
+    "unit": "Piece",
+    "img": "article_004.jpg"
+  },
+  {
+    "art": 5,
+    "name": "Coffee Mugs (White)",
+    "category": "drinkware",
+    "price": 800,
+    "unit": "Piece",
+    "img": "article_005.jpg"
+  },
+  {
+    "art": 6,
+    "name": "Stanley Mug (Big 40oz)",
+    "category": "drinkware",
+    "price": 1350,
+    "unit": "Piece",
+    "img": "article_006.jpg",
+    "badge": "Bestseller \ud83d\udd25"
+  },
+  {
+    "art": 7,
+    "name": "Thermoflask Gift Box Set",
+    "category": "drinkware",
+    "price": 1500,
+    "unit": "Giftbox",
+    "img": "article_007.jpg",
+    "badge": "Gift Set \ud83c\udf81"
+  },
+  {
+    "art": 8,
+    "name": "Thermo-LED Smart Flask",
+    "category": "drinkware",
+    "price": 830,
+    "unit": "Piece",
+    "img": "article_008.jpg"
+  },
+  {
+    "art": 9,
+    "name": "Java Mugs (Black/White)",
+    "category": "drinkware",
+    "price": 800,
+    "unit": "Piece",
+    "img": "article_009.jpg"
+  },
+  {
+    "art": 10,
+    "name": "Stanley Mug with Open Arm Handle",
+    "category": "drinkware",
+    "price": 1100,
+    "unit": "Piece",
+    "img": "article_010.jpg"
+  },
+  {
+    "art": 11,
+    "name": "Sport Water Bottle (Insulated)",
+    "category": "drinkware",
+    "price": 1100,
+    "unit": "Piece",
+    "img": "article_011.jpg"
+  },
+  {
+    "art": 12,
+    "name": "Baby Water Bottle with Strap",
+    "category": "drinkware",
+    "price": 550,
+    "unit": "Piece",
+    "img": "article_013.jpg"
+  },
+  {
+    "art": 13,
+    "name": "Christmas Coffee Mug (Festive)",
+    "category": "drinkware",
+    "price": 750,
+    "unit": "Piece",
+    "img": "article_014.jpg"
+  },
+  {
+    "art": 14,
+    "name": "Ceramic Table Vase (Geometric)",
+    "category": "home",
+    "price": 2350,
+    "unit": "Piece",
+    "img": "article_016.jpg",
+    "badge": "Home Decor"
+  },
+  {
+    "art": 15,
+    "name": "White Ceramic Sculpted Vase",
+    "category": "home",
+    "price": 2050,
+    "unit": "10 pcs / Piece",
+    "img": "article_017.jpg"
+  },
+  {
+    "art": 16,
+    "name": "Fluffy Faux Fur Bag",
+    "category": "bags",
+    "price": 800,
+    "unit": "Piece",
+    "img": "article_018.jpg"
+  },
+  {
+    "art": 17,
+    "name": "PU Leather Designer Bag",
+    "category": "bags",
+    "price": 1499,
+    "unit": "Piece",
+    "img": "article_019.jpg"
+  },
+  {
+    "art": 18,
+    "name": "Mini Push Lock Handbag",
+    "category": "bags",
+    "price": 1799,
+    "unit": "Piece",
+    "img": "article_020.jpg",
+    "badge": "Top Pick"
+  },
+  {
+    "art": 19,
+    "name": "Clutch Ball Spherical Bags",
+    "category": "bags",
+    "price": 1500,
+    "unit": "Piece",
+    "img": "article_021.jpg"
+  },
+  {
+    "art": 20,
+    "name": "Baby Girls' Lovely Miffy Bag",
+    "category": "bags",
+    "price": 650,
+    "unit": "20 pcs / Piece",
+    "img": "article_022.jpg"
+  },
+  {
+    "art": 21,
+    "name": "Plush Giant Teddy Bears",
+    "category": "home",
+    "price": 2000,
+    "unit": "Piece",
+    "img": "article_023.jpg",
+    "badge": "Gift Favorite \ud83e\uddf8"
+  },
+  {
+    "art": 22,
+    "name": "Summer Beach Bag & Wide Hat Set",
+    "category": "bags",
+    "price": 2500,
+    "unit": "Set (Hat 1200 / Bag 1300)",
+    "img": "article_024.jpg"
+  },
+  {
+    "art": 23,
+    "name": "Summer Beach Bag (Tassel)",
+    "category": "bags",
+    "price": 2000,
+    "unit": "Piece",
+    "img": "article_025.jpg"
+  },
+  {
+    "art": 24,
+    "name": "Rainbow Summer Beach Bag",
+    "category": "bags",
+    "price": 2000,
+    "unit": "Piece",
+    "img": "article_026.jpg"
+  },
+  {
+    "art": 25,
+    "name": "Women's Fashion Glasses",
+    "category": "accessories",
+    "price": 1200,
+    "unit": "Piece",
+    "img": "article_027.jpg"
+  },
+  {
+    "art": 26,
+    "name": "Women's Oversized Sunglasses",
+    "category": "accessories",
+    "price": 750,
+    "unit": "Piece",
+    "img": "article_028.jpg"
+  },
+  {
+    "art": 27,
+    "name": "Luxury Gift-Box (Assorted Colours)",
+    "category": "home",
+    "price": 250,
+    "unit": "Piece",
+    "img": "article_029.jpg"
+  },
+  {
+    "art": 28,
+    "name": "Women's Watches with Watch-Stand",
+    "category": "watches",
+    "price": 550,
+    "unit": "Watch 550 / Stand 150",
+    "img": "article_030.jpg"
+  },
+  {
+    "art": 29,
+    "name": "GT6 Watch Ultimate Smartwatch",
+    "category": "watches",
+    "price": 5000,
+    "unit": "Piece",
+    "img": "article_031.jpg",
+    "badge": "AMOLED Tech"
+  },
+  {
+    "art": 30,
+    "name": "Man's Quartz Watch (Classic)",
+    "category": "watches",
+    "price": 1500,
+    "unit": "10 pcs / Piece",
+    "img": "article_032.jpg"
+  },
+  {
+    "art": 31,
+    "name": "Poedager Luxury Man's Watch (Green)",
+    "category": "watches",
+    "price": 4000,
+    "unit": "Piece",
+    "img": "article_033.jpg",
+    "badge": "Executive"
+  },
+  {
+    "art": 32,
+    "name": "SKMEI Lady Leather Watch",
+    "category": "watches",
+    "price": 2000,
+    "unit": "Piece",
+    "img": "article_034.jpg"
+  },
+  {
+    "art": 33,
+    "name": "SKMEI Lady Rose-Gold Mesh Watch",
+    "category": "watches",
+    "price": 2000,
+    "unit": "Piece",
+    "img": "article_035.jpg"
+  },
+  {
+    "art": 34,
+    "name": "Q12 Kid's GPS Smart Watch with SOS",
+    "category": "watches",
+    "price": 2500,
+    "unit": "Piece",
+    "img": "article_036.jpg",
+    "badge": "Kid's Safe"
+  },
+  {
+    "art": 35,
+    "name": "HryFine Sport-Smart Watch",
+    "category": "watches",
+    "price": 2000,
+    "unit": "Piece",
+    "img": "article_037.jpg"
+  },
+  {
+    "art": 36,
+    "name": "Ladies' Earrings Weekly Gift Box",
+    "category": "accessories",
+    "price": 1050,
+    "unit": "Box (1050 Kes) / Pair (150 Kes)",
+    "img": "article_038.jpg"
+  },
+  {
+    "art": 37,
+    "name": "Ladies' Statement Drop Earrings",
+    "category": "accessories",
+    "price": 500,
+    "unit": "Pair",
+    "img": "article_039.jpg"
+  },
+  {
+    "art": 38,
+    "name": "Ladies Minimalist Pendant Necklace",
+    "category": "accessories",
+    "price": 1200,
+    "unit": "Piece",
+    "img": "article_040.jpg"
+  },
+  {
+    "art": 39,
+    "name": "Lady's Bling Comfort Sandals",
+    "category": "footwear",
+    "price": 1000,
+    "unit": "Pair",
+    "img": "article_041.jpg"
+  },
+  {
+    "art": 40,
+    "name": "Boys Baby Character Crocs",
+    "category": "footwear",
+    "price": 1000,
+    "unit": "Pair",
+    "img": "article_042.jpg"
+  },
+  {
+    "art": 41,
+    "name": "Girls Baby Bow Ribbon Crocs",
+    "category": "footwear",
+    "price": 650,
+    "unit": "Pair",
+    "img": "article_043.jpg"
+  },
+  {
+    "art": 42,
+    "name": "Kids Cute Sweet Rabbit Crocs (Pink)",
+    "category": "footwear",
+    "price": 550,
+    "unit": "Pair",
+    "img": "article_044.jpg"
+  },
+  {
+    "art": 43,
+    "name": "Kids Character Crocs (Blue)",
+    "category": "footwear",
+    "price": 550,
+    "unit": "Pair",
+    "img": "article_045.jpg"
+  },
+  {
+    "art": 44,
+    "name": "Quality Kids Designer Sneakers",
+    "category": "footwear",
+    "price": 2000,
+    "unit": "Pair",
+    "img": "article_046.jpg"
+  },
+  {
+    "art": 45,
+    "name": "Girls/Boys Chunky Color Sneakers",
+    "category": "footwear",
+    "price": 2200,
+    "unit": "Pair",
+    "img": "article_047.jpg"
+  },
+  {
+    "art": 46,
+    "name": "Leather Hip Liquor Flask with 2 Funnels",
+    "category": "home",
+    "price": 999,
+    "unit": "Piece",
+    "img": "article_049.jpg"
+  },
+  {
+    "art": 47,
+    "name": "Designer Leather Belt (Black)",
+    "category": "accessories",
+    "price": 650,
+    "unit": "Piece",
+    "img": "article_050.jpg"
+  },
+  {
+    "art": 48,
+    "name": "Designer Leather Belt (Brown)",
+    "category": "accessories",
+    "price": 650,
+    "unit": "Piece",
+    "img": "article_051.jpg"
+  },
+  {
+    "art": 49,
+    "name": "Handmade Scented Candle in Glass Jar",
+    "category": "beauty",
+    "price": 1000,
+    "unit": "Piece",
+    "img": "article_052.jpg"
+  },
+  {
+    "art": 50,
+    "name": "Handmade Scented Candle in Tin",
+    "category": "beauty",
+    "price": 800,
+    "unit": "Piece",
+    "img": "article_053.jpg"
+  },
+  {
+    "art": 51,
+    "name": "Crystal Wine Glass Set",
+    "category": "home",
+    "price": 350,
+    "unit": "Piece",
+    "img": "article_054.jpg"
+  },
+  {
+    "art": 52,
+    "name": "Selected Fine Red / White Wine",
+    "category": "home",
+    "price": 1500,
+    "unit": "Bottle (1500 - 2000)",
+    "img": "article_055.jpg"
+  },
+  {
+    "art": 53,
+    "name": "Tabletop Ship Wine Rack with Glass Holder",
+    "category": "home",
+    "price": 1500,
+    "unit": "Piece",
+    "img": "article_056.jpg"
+  },
+  {
+    "art": 54,
+    "name": "Aromatherapy Candle with Metal Stand",
+    "category": "beauty",
+    "price": 1000,
+    "unit": "Piece",
+    "img": "article_057.jpg"
+  },
+  {
+    "art": 55,
+    "name": "A5 Executive Notebook 3-Piece Gift Set",
+    "category": "home",
+    "price": 1500,
+    "unit": "Piece",
+    "img": "article_058.jpg",
+    "badge": "Corporate"
+  },
+  {
+    "art": 76,
+    "name": "Water Cup Angel (850ml with Strap)",
+    "category": "drinkware",
+    "price": 1250,
+    "unit": "Piece",
+    "img": "article_080.jpg"
+  },
+  {
+    "art": 77,
+    "name": "Moisturizing Fruit Lip Oil",
+    "category": "beauty",
+    "price": 150,
+    "unit": "Piece",
+    "img": "article_081.jpg"
+  },
+  {
+    "art": 78,
+    "name": "The Flowstate Stanley Mug (1.18L Floral)",
+    "category": "drinkware",
+    "price": 3350,
+    "unit": "10pcs / Piece",
+    "img": "article_082.jpg",
+    "badge": "Viral Edition"
+  },
+  {
+    "art": 79,
+    "name": "Fashion Socks (Assorted Designs)",
+    "category": "accessories",
+    "price": 250,
+    "unit": "Pair",
+    "img": "article_083.jpg"
+  },
+  {
+    "art": 80,
+    "name": "Cotton Graphic Socks (Free Size)",
+    "category": "accessories",
+    "price": 250,
+    "unit": "Pair",
+    "img": "article_085.jpg"
+  },
+  {
+    "art": 81,
+    "name": "Woven Shoulder Bag (36x12x25cm)",
+    "category": "bags",
+    "price": 1980,
+    "unit": "Piece",
+    "img": "article_086.jpg",
+    "badge": "Trending Bag"
+  },
+  {
+    "art": 82,
+    "name": "Mini Crossbody Bag (20x7x12cm)",
+    "category": "bags",
+    "price": 750,
+    "unit": "Piece",
+    "img": "article_087.jpg"
+  },
+  {
+    "art": 83,
+    "name": "Face Brush & Jade Roller Massage Set",
+    "category": "beauty",
+    "price": 699,
+    "unit": "Set",
+    "img": "article_088.jpg"
+  },
+  {
+    "art": 84,
+    "name": "Mousuf Eau de Parfum (100ml)",
+    "category": "beauty",
+    "price": 2500,
+    "unit": "Piece",
+    "img": "article_089.jpg",
+    "badge": "Signature Fragrance"
+  },
+  {
+    "art": 85,
+    "name": "Magic Lip Gloss (Capacity 10ml)",
+    "category": "beauty",
+    "price": 180,
+    "unit": "Piece",
+    "img": "article_090.jpg"
+  },
+  {
+    "art": 86,
+    "name": "Mking Pretty Lip Tint Set",
+    "category": "beauty",
+    "price": 170,
+    "unit": "Piece",
+    "img": "article_091.jpg"
+  },
+  {
+    "art": 87,
+    "name": "Vaseline Radiant Body Oil",
+    "category": "beauty",
+    "price": 700,
+    "unit": "Piece",
+    "img": "article_092.jpg"
+  },
+  {
+    "art": 88,
+    "name": "Convenient Handheld Portable Mini Fan",
+    "category": "home",
+    "price": 500,
+    "unit": "Piece",
+    "img": "article_093.jpg"
+  },
+  {
+    "art": 89,
+    "name": "Summer Slide Sandals (Size 36-42)",
+    "category": "footwear",
+    "price": 960,
+    "unit": "Pair",
+    "img": "article_094.jpg"
+  },
+  {
+    "art": 90,
+    "name": "Sadoer Coconut Hydrate Luxury Gift Set",
+    "category": "beauty",
+    "price": 400,
+    "unit": "Set = 3 Pieces",
+    "img": "article_095.jpg"
+  },
+  {
+    "art": 96,
+    "name": "Graphic Canvas Tote Bag (Big/Small)",
+    "category": "bags",
+    "price": 500,
+    "unit": "Big (500) / Small (150)",
+    "img": "article_101.jpg"
+  },
+  {
+    "art": 97,
+    "name": "Cuff Bracelet & Ring Jewellery Set",
+    "category": "accessories",
+    "price": 560,
+    "unit": "Set",
+    "img": "article_102.jpg"
+  },
+  {
+    "art": 98,
+    "name": "Warm Kiss Fragrance Perfume Set",
+    "category": "beauty",
+    "price": 500,
+    "unit": "Piece",
+    "img": "article_103.jpg"
+  },
+  {
+    "art": 99,
+    "name": "Lady's Block Heel Pumps",
+    "category": "footwear",
+    "price": 2000,
+    "unit": "Pair",
+    "img": "article_104.jpg"
+  },
+  {
+    "art": 100,
+    "name": "4-in-1 Handbag Luxury Combo Set",
+    "category": "bags",
+    "price": 500,
+    "unit": "Pair / Set",
+    "img": "article_105.jpg"
+  },
+  {
+    "art": 106,
+    "name": "Pastel Comfort Crocs Slides",
+    "category": "footwear",
+    "price": 550,
+    "unit": "Pair",
+    "img": "article_111.jpg"
+  },
+  {
+    "art": 107,
+    "name": "Kid's Strap Casual Shoes",
+    "category": "footwear",
+    "price": 650,
+    "unit": "Pair",
+    "img": "article_112.jpg"
+  },
+  {
+    "art": 108,
+    "name": "Corrugated Non-Stick Knife Set (6 Pcs)",
+    "category": "home",
+    "price": 900,
+    "unit": "Set",
+    "img": "article_113.jpg"
+  },
+  {
+    "art": 109,
+    "name": "Kids Cozy Warm Pyjamas",
+    "category": "home",
+    "price": 1200,
+    "unit": "Piece",
+    "img": "article_114.jpg"
+  },
+  {
+    "art": 110,
+    "name": "Earrings Assorted Variety Pack",
+    "category": "accessories",
+    "price": 500,
+    "unit": "Pair",
+    "img": "article_115.jpg"
+  },
+  {
+    "art": 121,
+    "name": "Chunky Platform Sport Sneakers",
+    "category": "footwear",
+    "price": 3000,
+    "unit": "Piece / Pair",
+    "img": "article_126.jpg"
+  },
+  {
+    "art": 122,
+    "name": "Kids Designer Casual Sneakers",
+    "category": "footwear",
+    "price": 1950,
+    "unit": "Piece",
+    "img": "article_127.jpg"
+  },
+  {
+    "art": 123,
+    "name": "Lightweight Breathable Sneakers",
+    "category": "footwear",
+    "price": 3500,
+    "unit": "Pair",
+    "img": "article_128.jpg"
+  },
+  {
+    "art": 124,
+    "name": "Sauvage Luxury Eau de Parfum",
+    "category": "beauty",
+    "price": 2500,
+    "unit": "Piece",
+    "img": "article_129.jpg",
+    "badge": "Designer Cologne"
+  },
+  {
+    "art": 125,
+    "name": "Mim Open Comfort Slides",
+    "category": "footwear",
+    "price": 450,
+    "unit": "Pair",
+    "img": "article_130.jpg"
+  },
+  {
+    "art": 126,
+    "name": "Automatic Dispenser Oil Jar",
+    "category": "home",
+    "price": 500,
+    "unit": "Piece",
+    "img": "article_131.jpg"
+  },
+  {
+    "art": 127,
+    "name": "Non-Slip Memory Bathmat",
+    "category": "home",
+    "price": 650,
+    "unit": "Piece",
+    "img": "article_132.jpg"
+  },
+  {
+    "art": 128,
+    "name": "Thermal Household Cleaning Gloves",
+    "category": "home",
+    "price": 400,
+    "unit": "Piece",
+    "img": "article_133.jpg"
+  },
+  {
+    "art": 129,
+    "name": "Chunky Knitted Sofa Throw Blanket",
+    "category": "home",
+    "price": 2850,
+    "unit": "Piece",
+    "img": "article_134.jpg",
+    "badge": "Cozy Home"
+  }
+]

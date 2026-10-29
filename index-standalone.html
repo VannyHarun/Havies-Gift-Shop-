@@ -1,0 +1,2591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="theme-color" content="#db2777">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Havie's Gift Shop">
+  <link rel="icon" type="image/jpeg" href="public/products/flavie_logo.jpg">
+  <title>Havie's Gift Shop | Official Online Catalog</title>
+  <meta name="description" content="Gift ideas, custom gift branding, flower bouquets, and gift delivery services at Katani Road, Kenya. WhatsApp +254 745 731 397.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          },
+          colors: {
+            pink: {
+              50:'#fdf2f8',100:'#fce7f3',200:'#fbcfe8',300:'#f9a8d4',
+              400:'#f472b6',500:'#ec4899',600:'#db2777',700:'#be185d',
+              800:'#9d174d',900:'#831843',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React & ReactDOM UMD -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <!-- Babel Standalone (for JSX) -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    :root { --pink: #db2777; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background: #fdf2f8; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    img { image-rendering: -webkit-optimize-contrast; }
+    .product-img { object-fit: cover; transition: transform 0.4s ease; }
+    .card:hover .product-img { transform: scale(1.07); }
+    .card { transition: box-shadow 0.25s, transform 0.25s; }
+    .card:hover { box-shadow: 0 20px 40px rgba(219,39,119,0.18); transform: translateY(-3px); }
+    .btn-wa { background: #25D366; }
+    .btn-wa:hover { background: #1ebe5d; }
+    @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:none} }
+    .fade-in { animation: fadeIn 0.35s ease both; }
+    @keyframes spinPulse { 0%,100%{transform:scale(1)}50%{transform:scale(1.15)} }
+    .spin-pulse { animation: spinPulse 1.5s infinite; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+
+// ── Data ──────────────────────────────────────────────────────────────────────
+const PRODUCTS = [
+  {
+    "id": "art-001",
+    "sku": "ART-001",
+    "name": "Cola Thermos Flask (500ml)",
+    "category": "drinkware",
+    "price": 800,
+    "originalPrice": 1000,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 13,
+    "badge": "",
+    "image": "public/products/article_001.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #001). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-002",
+    "sku": "ART-002",
+    "name": "Water Bottle (600ml)",
+    "category": "drinkware",
+    "price": 750,
+    "originalPrice": 937,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 14,
+    "badge": "",
+    "image": "public/products/article_002.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #002). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-003",
+    "sku": "ART-003",
+    "name": "Long Tumbler (White & Pink, 560ml)",
+    "category": "drinkware",
+    "price": 1110,
+    "originalPrice": 1387,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 15,
+    "badge": "",
+    "image": "public/products/article_003.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #003). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-004",
+    "sku": "ART-004",
+    "name": "Fancy Straw Tumblers",
+    "category": "drinkware",
+    "price": 1150,
+    "originalPrice": 1437,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 16,
+    "badge": "",
+    "image": "public/products/article_004.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #004). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-005",
+    "sku": "ART-005",
+    "name": "Coffee Mugs (White)",
+    "category": "drinkware",
+    "price": 800,
+    "originalPrice": 1000,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 17,
+    "badge": "",
+    "image": "public/products/article_005.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #005). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-006",
+    "sku": "ART-006",
+    "name": "Stanley Mug (Big 40oz)",
+    "category": "drinkware",
+    "price": 1350,
+    "originalPrice": 1687,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 18,
+    "badge": "Bestseller 🔥",
+    "image": "public/products/article_006.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #006). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-007",
+    "sku": "ART-007",
+    "name": "Thermoflask Gift Box Set",
+    "category": "drinkware",
+    "price": 1500,
+    "originalPrice": 1875,
+    "unit": "Giftbox",
+    "rating": 4.9,
+    "reviews": 19,
+    "badge": "Gift Set 🎁",
+    "image": "public/products/article_007.jpg",
+    "sizes": [
+      "Standard – Giftbox"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #007). Unit: Giftbox. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-008",
+    "sku": "ART-008",
+    "name": "Thermo-LED Smart Flask",
+    "category": "drinkware",
+    "price": 830,
+    "originalPrice": 1037,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 20,
+    "badge": "",
+    "image": "public/products/article_008.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #008). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-009",
+    "sku": "ART-009",
+    "name": "Java Mugs (Black/White)",
+    "category": "drinkware",
+    "price": 800,
+    "originalPrice": 1000,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 21,
+    "badge": "",
+    "image": "public/products/article_009.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #009). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-010",
+    "sku": "ART-010",
+    "name": "Stanley Mug with Open Arm Handle",
+    "category": "drinkware",
+    "price": 1100,
+    "originalPrice": 1375,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 22,
+    "badge": "",
+    "image": "public/products/article_010.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #010). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-011",
+    "sku": "ART-011",
+    "name": "Sport Water Bottle (Insulated)",
+    "category": "drinkware",
+    "price": 1100,
+    "originalPrice": 1375,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 23,
+    "badge": "",
+    "image": "public/products/article_011.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #011). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-012",
+    "sku": "ART-012",
+    "name": "Baby Water Bottle with Strap",
+    "category": "drinkware",
+    "price": 550,
+    "originalPrice": 687,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 24,
+    "badge": "",
+    "image": "public/products/article_013.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #012). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-013",
+    "sku": "ART-013",
+    "name": "Christmas Coffee Mug (Festive)",
+    "category": "drinkware",
+    "price": 750,
+    "originalPrice": 937,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 25,
+    "badge": "",
+    "image": "public/products/article_014.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #013). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-014",
+    "sku": "ART-014",
+    "name": "Ceramic Table Vase (Geometric)",
+    "category": "home",
+    "price": 2350,
+    "originalPrice": 2937,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 26,
+    "badge": "Home Decor",
+    "image": "public/products/article_016.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #014). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-015",
+    "sku": "ART-015",
+    "name": "White Ceramic Sculpted Vase",
+    "category": "home",
+    "price": 2050,
+    "originalPrice": 2562,
+    "unit": "10 pcs / Piece",
+    "rating": 4.9,
+    "reviews": 27,
+    "badge": "",
+    "image": "public/products/article_017.jpg",
+    "sizes": [
+      "Standard – 10 pcs / Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #015). Unit: 10 pcs / Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-016",
+    "sku": "ART-016",
+    "name": "Fluffy Faux Fur Bag",
+    "category": "bags",
+    "price": 800,
+    "originalPrice": 1000,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 28,
+    "badge": "",
+    "image": "public/products/article_018.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #016). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-017",
+    "sku": "ART-017",
+    "name": "PU Leather Designer Bag",
+    "category": "bags",
+    "price": 1499,
+    "originalPrice": 1873,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 29,
+    "badge": "",
+    "image": "public/products/article_019.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #017). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-018",
+    "sku": "ART-018",
+    "name": "Mini Push Lock Handbag",
+    "category": "bags",
+    "price": 1799,
+    "originalPrice": 2248,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 30,
+    "badge": "Top Pick",
+    "image": "public/products/article_020.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #018). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-019",
+    "sku": "ART-019",
+    "name": "Clutch Ball Spherical Bags",
+    "category": "bags",
+    "price": 1500,
+    "originalPrice": 1875,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 31,
+    "badge": "",
+    "image": "public/products/article_021.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #019). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-020",
+    "sku": "ART-020",
+    "name": "Baby Girls' Lovely Miffy Bag",
+    "category": "bags",
+    "price": 650,
+    "originalPrice": 812,
+    "unit": "20 pcs / Piece",
+    "rating": 4.9,
+    "reviews": 32,
+    "badge": "",
+    "image": "public/products/article_022.jpg",
+    "sizes": [
+      "Standard – 20 pcs / Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #020). Unit: 20 pcs / Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-021",
+    "sku": "ART-021",
+    "name": "Plush Giant Teddy Bears",
+    "category": "home",
+    "price": 2000,
+    "originalPrice": 2500,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 33,
+    "badge": "Gift Favorite 🧸",
+    "image": "public/products/article_023.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #021). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-022",
+    "sku": "ART-022",
+    "name": "Summer Beach Bag & Wide Hat Set",
+    "category": "bags",
+    "price": 2500,
+    "originalPrice": 3125,
+    "unit": "Set (Hat 1200 / Bag 1300)",
+    "rating": 4.9,
+    "reviews": 34,
+    "badge": "",
+    "image": "public/products/article_024.jpg",
+    "sizes": [
+      "Standard – Set (Hat 1200 / Bag 1300)"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #022). Unit: Set (Hat 1200 / Bag 1300). Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-023",
+    "sku": "ART-023",
+    "name": "Summer Beach Bag (Tassel)",
+    "category": "bags",
+    "price": 2000,
+    "originalPrice": 2500,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 35,
+    "badge": "",
+    "image": "public/products/article_025.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #023). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-024",
+    "sku": "ART-024",
+    "name": "Rainbow Summer Beach Bag",
+    "category": "bags",
+    "price": 2000,
+    "originalPrice": 2500,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 36,
+    "badge": "",
+    "image": "public/products/article_026.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #024). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-025",
+    "sku": "ART-025",
+    "name": "Women's Fashion Glasses",
+    "category": "accessories",
+    "price": 1200,
+    "originalPrice": 1500,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 37,
+    "badge": "",
+    "image": "public/products/article_027.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #025). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-026",
+    "sku": "ART-026",
+    "name": "Women's Oversized Sunglasses",
+    "category": "accessories",
+    "price": 750,
+    "originalPrice": 937,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 38,
+    "badge": "",
+    "image": "public/products/article_028.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #026). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-027",
+    "sku": "ART-027",
+    "name": "Luxury Gift-Box (Assorted Colours)",
+    "category": "home",
+    "price": 250,
+    "originalPrice": 312,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 39,
+    "badge": "",
+    "image": "public/products/article_029.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #027). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-028",
+    "sku": "ART-028",
+    "name": "Women's Watches with Watch-Stand",
+    "category": "watches",
+    "price": 550,
+    "originalPrice": 687,
+    "unit": "Watch 550 / Stand 150",
+    "rating": 4.9,
+    "reviews": 40,
+    "badge": "",
+    "image": "public/products/article_030.jpg",
+    "sizes": [
+      "Standard – Watch 550 / Stand 150"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #028). Unit: Watch 550 / Stand 150. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-029",
+    "sku": "ART-029",
+    "name": "GT6 Watch Ultimate Smartwatch",
+    "category": "watches",
+    "price": 5000,
+    "originalPrice": 6250,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 41,
+    "badge": "AMOLED Tech",
+    "image": "public/products/article_031.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #029). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-030",
+    "sku": "ART-030",
+    "name": "Man's Quartz Watch (Classic)",
+    "category": "watches",
+    "price": 1500,
+    "originalPrice": 1875,
+    "unit": "10 pcs / Piece",
+    "rating": 4.9,
+    "reviews": 42,
+    "badge": "",
+    "image": "public/products/article_032.jpg",
+    "sizes": [
+      "Standard – 10 pcs / Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #030). Unit: 10 pcs / Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-031",
+    "sku": "ART-031",
+    "name": "Poedager Luxury Man's Watch (Green)",
+    "category": "watches",
+    "price": 4000,
+    "originalPrice": 5000,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 43,
+    "badge": "Executive",
+    "image": "public/products/article_033.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #031). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-032",
+    "sku": "ART-032",
+    "name": "SKMEI Lady Leather Watch",
+    "category": "watches",
+    "price": 2000,
+    "originalPrice": 2500,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 44,
+    "badge": "",
+    "image": "public/products/article_034.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #032). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-033",
+    "sku": "ART-033",
+    "name": "SKMEI Lady Rose-Gold Mesh Watch",
+    "category": "watches",
+    "price": 2000,
+    "originalPrice": 2500,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 45,
+    "badge": "",
+    "image": "public/products/article_035.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #033). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-034",
+    "sku": "ART-034",
+    "name": "Q12 Kid's GPS Smart Watch with SOS",
+    "category": "watches",
+    "price": 2500,
+    "originalPrice": 3125,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 46,
+    "badge": "Kid's Safe",
+    "image": "public/products/article_036.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #034). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-035",
+    "sku": "ART-035",
+    "name": "HryFine Sport-Smart Watch",
+    "category": "watches",
+    "price": 2000,
+    "originalPrice": 2500,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 47,
+    "badge": "",
+    "image": "public/products/article_037.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #035). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-036",
+    "sku": "ART-036",
+    "name": "Ladies' Earrings Weekly Gift Box",
+    "category": "accessories",
+    "price": 1050,
+    "originalPrice": 1312,
+    "unit": "Box (1050 Kes) / Pair (150 Kes)",
+    "rating": 4.9,
+    "reviews": 48,
+    "badge": "",
+    "image": "public/products/article_038.jpg",
+    "sizes": [
+      "Standard – Box (1050 Kes) / Pair (150 Kes)"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #036). Unit: Box (1050 Kes) / Pair (150 Kes). Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-037",
+    "sku": "ART-037",
+    "name": "Ladies' Statement Drop Earrings",
+    "category": "accessories",
+    "price": 500,
+    "originalPrice": 625,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 49,
+    "badge": "",
+    "image": "public/products/article_039.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #037). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-038",
+    "sku": "ART-038",
+    "name": "Ladies Minimalist Pendant Necklace",
+    "category": "accessories",
+    "price": 1200,
+    "originalPrice": 1500,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 50,
+    "badge": "",
+    "image": "public/products/article_040.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #038). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-039",
+    "sku": "ART-039",
+    "name": "Lady's Bling Comfort Sandals",
+    "category": "footwear",
+    "price": 1000,
+    "originalPrice": 1250,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 51,
+    "badge": "",
+    "image": "public/products/article_041.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #039). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-040",
+    "sku": "ART-040",
+    "name": "Boys Baby Character Crocs",
+    "category": "footwear",
+    "price": 1000,
+    "originalPrice": 1250,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 12,
+    "badge": "",
+    "image": "public/products/article_042.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #040). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-041",
+    "sku": "ART-041",
+    "name": "Girls Baby Bow Ribbon Crocs",
+    "category": "footwear",
+    "price": 650,
+    "originalPrice": 812,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 13,
+    "badge": "",
+    "image": "public/products/article_043.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #041). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-042",
+    "sku": "ART-042",
+    "name": "Kids Cute Sweet Rabbit Crocs (Pink)",
+    "category": "footwear",
+    "price": 550,
+    "originalPrice": 687,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 14,
+    "badge": "",
+    "image": "public/products/article_044.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #042). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-043",
+    "sku": "ART-043",
+    "name": "Kids Character Crocs (Blue)",
+    "category": "footwear",
+    "price": 550,
+    "originalPrice": 687,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 15,
+    "badge": "",
+    "image": "public/products/article_045.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #043). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-044",
+    "sku": "ART-044",
+    "name": "Quality Kids Designer Sneakers",
+    "category": "footwear",
+    "price": 2000,
+    "originalPrice": 2500,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 16,
+    "badge": "",
+    "image": "public/products/article_046.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #044). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-045",
+    "sku": "ART-045",
+    "name": "Girls/Boys Chunky Color Sneakers",
+    "category": "footwear",
+    "price": 2200,
+    "originalPrice": 2750,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 17,
+    "badge": "",
+    "image": "public/products/article_047.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #045). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-046",
+    "sku": "ART-046",
+    "name": "Leather Hip Liquor Flask with 2 Funnels",
+    "category": "home",
+    "price": 999,
+    "originalPrice": 1248,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 18,
+    "badge": "",
+    "image": "public/products/article_049.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #046). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-047",
+    "sku": "ART-047",
+    "name": "Designer Leather Belt (Black)",
+    "category": "accessories",
+    "price": 650,
+    "originalPrice": 812,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 19,
+    "badge": "",
+    "image": "public/products/article_050.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #047). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-048",
+    "sku": "ART-048",
+    "name": "Designer Leather Belt (Brown)",
+    "category": "accessories",
+    "price": 650,
+    "originalPrice": 812,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 20,
+    "badge": "",
+    "image": "public/products/article_051.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #048). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-049",
+    "sku": "ART-049",
+    "name": "Handmade Scented Candle in Glass Jar",
+    "category": "beauty",
+    "price": 1000,
+    "originalPrice": 1250,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 21,
+    "badge": "",
+    "image": "public/products/article_052.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #049). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-050",
+    "sku": "ART-050",
+    "name": "Handmade Scented Candle in Tin",
+    "category": "beauty",
+    "price": 800,
+    "originalPrice": 1000,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 22,
+    "badge": "",
+    "image": "public/products/article_053.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #050). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-051",
+    "sku": "ART-051",
+    "name": "Crystal Wine Glass Set",
+    "category": "home",
+    "price": 350,
+    "originalPrice": 437,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 23,
+    "badge": "",
+    "image": "public/products/article_054.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #051). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-052",
+    "sku": "ART-052",
+    "name": "Selected Fine Red / White Wine",
+    "category": "home",
+    "price": 1500,
+    "originalPrice": 1875,
+    "unit": "Bottle (1500 - 2000)",
+    "rating": 4.9,
+    "reviews": 24,
+    "badge": "",
+    "image": "public/products/article_055.jpg",
+    "sizes": [
+      "Standard – Bottle (1500 - 2000)"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #052). Unit: Bottle (1500 - 2000). Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-053",
+    "sku": "ART-053",
+    "name": "Tabletop Ship Wine Rack with Glass Holder",
+    "category": "home",
+    "price": 1500,
+    "originalPrice": 1875,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 25,
+    "badge": "",
+    "image": "public/products/article_056.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #053). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-054",
+    "sku": "ART-054",
+    "name": "Aromatherapy Candle with Metal Stand",
+    "category": "beauty",
+    "price": 1000,
+    "originalPrice": 1250,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 26,
+    "badge": "",
+    "image": "public/products/article_057.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #054). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-055",
+    "sku": "ART-055",
+    "name": "A5 Executive Notebook 3-Piece Gift Set",
+    "category": "home",
+    "price": 1500,
+    "originalPrice": 1875,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 27,
+    "badge": "Corporate",
+    "image": "public/products/article_058.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #055). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-076",
+    "sku": "ART-076",
+    "name": "Water Cup Angel (850ml with Strap)",
+    "category": "drinkware",
+    "price": 1250,
+    "originalPrice": 1562,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 48,
+    "badge": "",
+    "image": "public/products/article_080.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #076). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-077",
+    "sku": "ART-077",
+    "name": "Moisturizing Fruit Lip Oil",
+    "category": "beauty",
+    "price": 150,
+    "originalPrice": 187,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 49,
+    "badge": "",
+    "image": "public/products/article_081.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #077). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-078",
+    "sku": "ART-078",
+    "name": "The Flowstate Stanley Mug (1.18L Floral)",
+    "category": "drinkware",
+    "price": 3350,
+    "originalPrice": 4187,
+    "unit": "10pcs / Piece",
+    "rating": 4.9,
+    "reviews": 50,
+    "badge": "Viral Edition",
+    "image": "public/products/article_082.jpg",
+    "sizes": [
+      "Standard – 10pcs / Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #078). Unit: 10pcs / Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-079",
+    "sku": "ART-079",
+    "name": "Fashion Socks (Assorted Designs)",
+    "category": "accessories",
+    "price": 250,
+    "originalPrice": 312,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 51,
+    "badge": "",
+    "image": "public/products/article_083.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #079). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-080",
+    "sku": "ART-080",
+    "name": "Cotton Graphic Socks (Free Size)",
+    "category": "accessories",
+    "price": 250,
+    "originalPrice": 312,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 12,
+    "badge": "",
+    "image": "public/products/article_085.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #080). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-081",
+    "sku": "ART-081",
+    "name": "Woven Shoulder Bag (36x12x25cm)",
+    "category": "bags",
+    "price": 1980,
+    "originalPrice": 2475,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 13,
+    "badge": "Trending Bag",
+    "image": "public/products/article_086.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #081). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-082",
+    "sku": "ART-082",
+    "name": "Mini Crossbody Bag (20x7x12cm)",
+    "category": "bags",
+    "price": 750,
+    "originalPrice": 937,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 14,
+    "badge": "",
+    "image": "public/products/article_087.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #082). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-083",
+    "sku": "ART-083",
+    "name": "Face Brush & Jade Roller Massage Set",
+    "category": "beauty",
+    "price": 699,
+    "originalPrice": 873,
+    "unit": "Set",
+    "rating": 4.9,
+    "reviews": 15,
+    "badge": "",
+    "image": "public/products/article_088.jpg",
+    "sizes": [
+      "Standard – Set"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #083). Unit: Set. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-084",
+    "sku": "ART-084",
+    "name": "Mousuf Eau de Parfum (100ml)",
+    "category": "beauty",
+    "price": 2500,
+    "originalPrice": 3125,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 16,
+    "badge": "Signature Fragrance",
+    "image": "public/products/article_089.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #084). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-085",
+    "sku": "ART-085",
+    "name": "Magic Lip Gloss (Capacity 10ml)",
+    "category": "beauty",
+    "price": 180,
+    "originalPrice": 225,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 17,
+    "badge": "",
+    "image": "public/products/article_090.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #085). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-086",
+    "sku": "ART-086",
+    "name": "Mking Pretty Lip Tint Set",
+    "category": "beauty",
+    "price": 170,
+    "originalPrice": 212,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 18,
+    "badge": "",
+    "image": "public/products/article_091.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #086). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-087",
+    "sku": "ART-087",
+    "name": "Vaseline Radiant Body Oil",
+    "category": "beauty",
+    "price": 700,
+    "originalPrice": 875,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 19,
+    "badge": "",
+    "image": "public/products/article_092.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #087). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-088",
+    "sku": "ART-088",
+    "name": "Convenient Handheld Portable Mini Fan",
+    "category": "home",
+    "price": 500,
+    "originalPrice": 625,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 20,
+    "badge": "",
+    "image": "public/products/article_093.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #088). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-089",
+    "sku": "ART-089",
+    "name": "Summer Slide Sandals (Size 36-42)",
+    "category": "footwear",
+    "price": 960,
+    "originalPrice": 1200,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 21,
+    "badge": "",
+    "image": "public/products/article_094.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #089). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-090",
+    "sku": "ART-090",
+    "name": "Sadoer Coconut Hydrate Luxury Gift Set",
+    "category": "beauty",
+    "price": 400,
+    "originalPrice": 500,
+    "unit": "Set = 3 Pieces",
+    "rating": 4.9,
+    "reviews": 22,
+    "badge": "",
+    "image": "public/products/article_095.jpg",
+    "sizes": [
+      "Standard – Set = 3 Pieces"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #090). Unit: Set = 3 Pieces. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-096",
+    "sku": "ART-096",
+    "name": "Graphic Canvas Tote Bag (Big/Small)",
+    "category": "bags",
+    "price": 500,
+    "originalPrice": 625,
+    "unit": "Big (500) / Small (150)",
+    "rating": 4.9,
+    "reviews": 28,
+    "badge": "",
+    "image": "public/products/article_101.jpg",
+    "sizes": [
+      "Standard – Big (500) / Small (150)"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #096). Unit: Big (500) / Small (150). Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-097",
+    "sku": "ART-097",
+    "name": "Cuff Bracelet & Ring Jewellery Set",
+    "category": "accessories",
+    "price": 560,
+    "originalPrice": 700,
+    "unit": "Set",
+    "rating": 4.9,
+    "reviews": 29,
+    "badge": "",
+    "image": "public/products/article_102.jpg",
+    "sizes": [
+      "Standard – Set"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #097). Unit: Set. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-098",
+    "sku": "ART-098",
+    "name": "Warm Kiss Fragrance Perfume Set",
+    "category": "beauty",
+    "price": 500,
+    "originalPrice": 625,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 30,
+    "badge": "",
+    "image": "public/products/article_103.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #098). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-099",
+    "sku": "ART-099",
+    "name": "Lady's Block Heel Pumps",
+    "category": "footwear",
+    "price": 2000,
+    "originalPrice": 2500,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 31,
+    "badge": "",
+    "image": "public/products/article_104.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #099). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-100",
+    "sku": "ART-100",
+    "name": "4-in-1 Handbag Luxury Combo Set",
+    "category": "bags",
+    "price": 500,
+    "originalPrice": 625,
+    "unit": "Pair / Set",
+    "rating": 4.9,
+    "reviews": 32,
+    "badge": "",
+    "image": "public/products/article_105.jpg",
+    "sizes": [
+      "Standard – Pair / Set"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #100). Unit: Pair / Set. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-106",
+    "sku": "ART-106",
+    "name": "Pastel Comfort Crocs Slides",
+    "category": "footwear",
+    "price": 550,
+    "originalPrice": 687,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 38,
+    "badge": "",
+    "image": "public/products/article_111.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #106). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-107",
+    "sku": "ART-107",
+    "name": "Kid's Strap Casual Shoes",
+    "category": "footwear",
+    "price": 650,
+    "originalPrice": 812,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 39,
+    "badge": "",
+    "image": "public/products/article_112.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #107). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-108",
+    "sku": "ART-108",
+    "name": "Corrugated Non-Stick Knife Set (6 Pcs)",
+    "category": "home",
+    "price": 900,
+    "originalPrice": 1125,
+    "unit": "Set",
+    "rating": 4.9,
+    "reviews": 40,
+    "badge": "",
+    "image": "public/products/article_113.jpg",
+    "sizes": [
+      "Standard – Set"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #108). Unit: Set. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-109",
+    "sku": "ART-109",
+    "name": "Kids Cozy Warm Pyjamas",
+    "category": "home",
+    "price": 1200,
+    "originalPrice": 1500,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 41,
+    "badge": "",
+    "image": "public/products/article_114.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #109). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-110",
+    "sku": "ART-110",
+    "name": "Earrings Assorted Variety Pack",
+    "category": "accessories",
+    "price": 500,
+    "originalPrice": 625,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 42,
+    "badge": "",
+    "image": "public/products/article_115.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #110). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-121",
+    "sku": "ART-121",
+    "name": "Chunky Platform Sport Sneakers",
+    "category": "footwear",
+    "price": 3000,
+    "originalPrice": 3750,
+    "unit": "Piece / Pair",
+    "rating": 4.9,
+    "reviews": 13,
+    "badge": "",
+    "image": "public/products/article_126.jpg",
+    "sizes": [
+      "Standard – Piece / Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #121). Unit: Piece / Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-122",
+    "sku": "ART-122",
+    "name": "Kids Designer Casual Sneakers",
+    "category": "footwear",
+    "price": 1950,
+    "originalPrice": 2437,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 14,
+    "badge": "",
+    "image": "public/products/article_127.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #122). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-123",
+    "sku": "ART-123",
+    "name": "Lightweight Breathable Sneakers",
+    "category": "footwear",
+    "price": 3500,
+    "originalPrice": 4375,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 15,
+    "badge": "",
+    "image": "public/products/article_128.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #123). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-124",
+    "sku": "ART-124",
+    "name": "Sauvage Luxury Eau de Parfum",
+    "category": "beauty",
+    "price": 2500,
+    "originalPrice": 3125,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 16,
+    "badge": "Designer Cologne",
+    "image": "public/products/article_129.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #124). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-125",
+    "sku": "ART-125",
+    "name": "Mim Open Comfort Slides",
+    "category": "footwear",
+    "price": 450,
+    "originalPrice": 562,
+    "unit": "Pair",
+    "rating": 4.9,
+    "reviews": 17,
+    "badge": "",
+    "image": "public/products/article_130.jpg",
+    "sizes": [
+      "Standard – Pair"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #125). Unit: Pair. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-126",
+    "sku": "ART-126",
+    "name": "Automatic Dispenser Oil Jar",
+    "category": "home",
+    "price": 500,
+    "originalPrice": 625,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 18,
+    "badge": "",
+    "image": "public/products/article_131.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #126). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-127",
+    "sku": "ART-127",
+    "name": "Non-Slip Memory Bathmat",
+    "category": "home",
+    "price": 650,
+    "originalPrice": 812,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 19,
+    "badge": "",
+    "image": "public/products/article_132.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #127). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-128",
+    "sku": "ART-128",
+    "name": "Thermal Household Cleaning Gloves",
+    "category": "home",
+    "price": 400,
+    "originalPrice": 500,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 20,
+    "badge": "",
+    "image": "public/products/article_133.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #128). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  },
+  {
+    "id": "art-129",
+    "sku": "ART-129",
+    "name": "Chunky Knitted Sofa Throw Blanket",
+    "category": "home",
+    "price": 2850,
+    "originalPrice": 3562,
+    "unit": "Piece",
+    "rating": 4.9,
+    "reviews": 21,
+    "badge": "Cozy Home",
+    "image": "public/products/article_134.jpg",
+    "sizes": [
+      "Standard – Piece"
+    ],
+    "colors": [
+      "As pictured in catalog"
+    ],
+    "description": "Official Havie's Gift Shop catalog product (Article #129). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
+  }
+];
+const CATEGORIES = [{"id": "all", "label": "\ud83d\udecd\ufe0f All Products"}, {"id": "drinkware", "label": "\ud83e\udd64 Drinkware"}, {"id": "bags", "label": "\ud83d\udc5c Bags & Purses"}, {"id": "footwear", "label": "\ud83d\udc5f Footwear"}, {"id": "watches", "label": "\u231a Watches"}, {"id": "accessories", "label": "\ud83d\udc8e Accessories"}, {"id": "beauty", "label": "\ud83d\udc84 Beauty"}, {"id": "home", "label": "\ud83c\udfe0 Home & Decor"}];
+
+const WA_NUMBER = "254745731397";
+const SHOP_NAME = "Havie's Gift Shop";
+const SHOP_PHONE = "+254 745 731 397";
+const SHOP_INSTA = "@haviesgiftshop";
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function fmt(n) { return "KES " + Number(n).toLocaleString(); }
+function waLink(msg) { return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`; }
+function starStr(r) { return "★".repeat(Math.round(r)) + "☆".repeat(5 - Math.round(r)); }
+// ── Cart atom ─────────────────────────────────────────────────────────────────
+function useCart() {
+  const [cart, setCart] = useState([]);
+  const add = useCallback((p, qty=1) => {
+    setCart(c => {
+      const ex = c.find(x=>x.id===p.id);
+      return ex ? c.map(x=>x.id===p.id?{...x,qty:x.qty+qty}:x)
+                : [...c, {...p, qty}];
+    });
+  },[]);
+  const remove = useCallback(id => setCart(c=>c.filter(x=>x.id!==id)),[]);
+  const clear = useCallback(()=>setCart([]),[]);
+  const total = cart.reduce((s,x)=>s+x.price*x.qty, 0);
+  const count = cart.reduce((s,x)=>s+x.qty, 0);
+  return { cart, add, remove, clear, total, count };
+}
+
+// ── Wishlist atom ─────────────────────────────────────────────────────────────
+function useWish() {
+  const [wish, setWish] = useState(new Set());
+  const toggle = id => setWish(w => { const n=new Set(w); n.has(id)?n.delete(id):n.add(id); return n; });
+  return { wish, toggle };
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+function Header({ cartCount, onCart, onAdmin, search, setSearch }) {
+  return (
+    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-pink-100 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
+        <img src="public/products/flavie_logo.jpg" alt="Havie's Gift Shop Logo"
+          className="h-12 w-12 rounded-full object-cover border-2 border-pink-400 shadow flex-shrink-0"
+          onError={e=>{e.target.style.display='none'}}
+        />
+        <div className="flex-1 min-w-0">
+          <h1 className="font-serif font-bold text-pink-700 text-lg leading-tight truncate">Havie's Gift Shop</h1>
+          <p className="text-xs text-gray-500 hidden sm:block">Gift Ideas · Flowers · Gift Branding</p>
+        </div>
+        <div className="flex-1 max-w-xs hidden md:block">
+          <input value={search} onChange={e=>setSearch(e.target.value)}
+            placeholder="Search products…"
+            className="w-full border border-pink-200 rounded-full px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-pink-400"
+          />
+        </div>
+        <button onClick={onCart}
+          className="relative p-2 rounded-full bg-pink-600 text-white hover:bg-pink-700 transition"
+          title="View Cart"
+        >
+          🛒
+          {cartCount>0 && (
+            <span className="absolute -top-1 -right-1 bg-yellow-400 text-gray-900 text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
+        </button>
+        <button onClick={onAdmin}
+          className="p-2 rounded-full bg-gray-100 text-gray-700 hover:bg-pink-100 hover:text-pink-700 transition"
+          title="Open shop admin"
+          aria-label="Open shop admin"
+        >
+          ⚙️
+        </button>
+      </div>
+      {/* Mobile search */}
+      <div className="md:hidden px-4 pb-2">
+        <input value={search} onChange={e=>setSearch(e.target.value)}
+          placeholder="Search products…"
+          className="w-full border border-pink-200 rounded-full px-4 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-pink-400"
+        />
+      </div>
+    </header>
+  );
+}
+
+// ── Local admin panel ─────────────────────────────────────────────────────────
+function AdminPanel({ products, orders, onAddProduct, onDeleteProduct, onAddOrder, onUpdateOrder, onClose }) {
+  const [password, setPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [authenticated, setAuthenticated] = useState(false);
+  const [error, setError] = useState('');
+  const [form, setForm] = useState({ name: '', category: 'drinkware', price: '', image: '', description: '', unit: 'Piece' });
+  const [orderForm, setOrderForm] = useState({ customer: '', phone: '', productId: '', quantity: '1', status: 'pending' });
+  const hasPassword = Boolean(localStorage.getItem('havies_admin_password'));
+
+  const handleAccess = event => {
+    event.preventDefault();
+    if (!hasPassword) {
+      if (newPassword.trim().length < 8) {
+        setError('Choose a password with at least 8 characters.');
+        return;
+      }
+      localStorage.setItem('havies_admin_password', newPassword);
+      setAuthenticated(true);
+      setError('');
+      return;
+    }
+    if (password === localStorage.getItem('havies_admin_password')) {
+      setAuthenticated(true);
+      setError('');
+    } else {
+      setError('That password is not correct.');
+    }
+  };
+
+  const handleAdd = event => {
+    event.preventDefault();
+    const name = form.name.trim();
+    const image = form.image.trim();
+    const price = Number(form.price);
+    if (!name || !image || !Number.isFinite(price) || price <= 0) {
+      setError('Enter a product name, image URL, and price greater than zero.');
+      return;
+    }
+    onAddProduct({
+      id: `custom-${Date.now()}`,
+      sku: `CUSTOM-${Date.now().toString().slice(-6)}`,
+      name,
+      category: form.category,
+      price,
+      originalPrice: price,
+      unit: form.unit.trim() || 'Piece',
+      rating: 5,
+      reviews: 0,
+      badge: '',
+      image,
+      sizes: [`Standard – ${form.unit.trim() || 'Piece'}`],
+      colors: ['As pictured in catalog'],
+      description: form.description.trim() || `${name} from ${SHOP_NAME}. Order via WhatsApp for availability and delivery.`
+    });
+    setForm({ name: '', category: 'drinkware', price: '', image: '', description: '', unit: 'Piece' });
+    setError('');
+  };
+
+  const handleAddOrder = event => {
+    event.preventDefault();
+    const product = products.find(item => item.id === orderForm.productId);
+    const quantity = Number(orderForm.quantity);
+    if (!product || !Number.isInteger(quantity) || quantity < 1) {
+      setError('Select a product and enter a quantity of at least one.');
+      return;
+    }
+    onAddOrder({
+      id: `order-${Date.now()}`,
+      customer: orderForm.customer.trim(),
+      phone: orderForm.phone.trim(),
+      productId: product.id,
+      productName: product.name,
+      quantity,
+      total: product.price * quantity,
+      status: orderForm.status,
+      createdAt: new Date().toISOString()
+    });
+    setOrderForm({ customer: '', phone: '', productId: '', quantity: '1', status: 'pending' });
+    setError('');
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5" onClick={onClose}>
+      <section className="bg-white w-full max-w-3xl max-h-[92vh] overflow-y-auto rounded-2xl shadow-2xl" onClick={event => event.stopPropagation()}>
+        <div className="sticky top-0 z-10 bg-white border-b border-pink-100 px-5 py-4 flex items-center justify-between">
+          <div>
+            <h2 className="font-serif text-xl font-bold text-pink-800">Shop Admin</h2>
+            <p className="text-xs text-gray-500">Catalog changes are saved in this browser.</p>
+          </div>
+          <button onClick={onClose} className="text-2xl leading-none text-gray-500 hover:text-gray-900" aria-label="Close admin">×</button>
+        </div>
+
+        {!authenticated ? (
+          <form onSubmit={handleAccess} className="p-5 sm:p-7 max-w-md mx-auto space-y-4">
+            <h3 className="font-semibold text-gray-800">{hasPassword ? 'Admin sign in' : 'Set your admin password'}</h3>
+            <p className="text-sm text-gray-500">{hasPassword ? 'Enter your shop admin password to manage products.' : 'Create a password of at least 8 characters. Keep it private.'}</p>
+            {!hasPassword ? (
+              <input autoComplete="new-password" type="password" minLength="8" required value={newPassword} onChange={event => setNewPassword(event.target.value)} placeholder="Create password" className="w-full border border-pink-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            ) : (
+              <input autoComplete="current-password" type="password" required value={password} onChange={event => setPassword(event.target.value)} placeholder="Admin password" className="w-full border border-pink-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-pink-400" />
+            )}
+            {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+            <button type="submit" className="w-full rounded-lg bg-pink-700 hover:bg-pink-800 text-white font-bold py-2.5">{hasPassword ? 'Sign in' : 'Set password'}</button>
+            <p className="text-xs text-gray-400">This password is stored in this browser and is not server-side security.</p>
+          </form>
+        ) : (
+          <div className="p-5 sm:p-6 space-y-7">
+            <form onSubmit={handleAdd} className="space-y-3">
+              <h3 className="font-semibold text-gray-800">Add a product</h3>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <input required value={form.name} onChange={event => setForm({ ...form, name: event.target.value })} placeholder="Product name" className="border border-pink-200 rounded-lg px-3 py-2 text-sm" />
+                <select value={form.category} onChange={event => setForm({ ...form, category: event.target.value })} className="border border-pink-200 rounded-lg px-3 py-2 text-sm">
+                  {CATEGORIES.filter(category => category.id !== 'all').map(category => <option key={category.id} value={category.id}>{category.label.replace(/^\S+\s*/, '')}</option>)}
+                </select>
+                <input required type="number" min="1" step="1" value={form.price} onChange={event => setForm({ ...form, price: event.target.value })} placeholder="Price (KES)" className="border border-pink-200 rounded-lg px-3 py-2 text-sm" />
+                <input required type="url" value={form.image} onChange={event => setForm({ ...form, image: event.target.value })} placeholder="Image URL" className="border border-pink-200 rounded-lg px-3 py-2 text-sm" />
+                <input value={form.unit} onChange={event => setForm({ ...form, unit: event.target.value })} placeholder="Unit (e.g. Piece)" className="border border-pink-200 rounded-lg px-3 py-2 text-sm" />
+                <input value={form.description} onChange={event => setForm({ ...form, description: event.target.value })} placeholder="Description (optional)" className="border border-pink-200 rounded-lg px-3 py-2 text-sm" />
+              </div>
+              {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+              <button type="submit" className="rounded-lg bg-pink-700 hover:bg-pink-800 text-white font-bold px-5 py-2.5">+ Add product</button>
+            </form>
+
+            <div className="border-t border-pink-100 pt-5">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-semibold text-gray-800">Remove sold-out products</h3>
+                <span className="text-xs text-gray-500">{products.length} products</span>
+              </div>
+              <ul className="divide-y divide-gray-100 max-h-72 overflow-y-auto">
+                {products.map(product => (
+                  <li key={product.id} className="flex items-center gap-3 py-2.5">
+                    <img src={product.image} alt="" className="w-10 h-10 rounded-md object-cover bg-pink-50" onError={event => { event.currentTarget.style.visibility = 'hidden'; }} />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-800 truncate">{product.name}</p>
+                      <p className="text-xs text-gray-500">{fmt(product.price)} · {product.category}</p>
+                    </div>
+                    <button type="button" onClick={() => onDeleteProduct(product)} className="shrink-0 rounded-md border border-red-200 px-2.5 py-1.5 text-xs font-semibold text-red-700 hover:bg-red-50">Remove</button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div className="border-t border-pink-100 pt-5 space-y-4">
+              <form onSubmit={handleAddOrder} className="space-y-3">
+                <h3 className="font-semibold text-gray-800">Record an order</h3>
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <input value={orderForm.customer} onChange={event => setOrderForm({ ...orderForm, customer: event.target.value })} placeholder="Customer name (optional)" className="border border-pink-200 rounded-lg px-3 py-2 text-sm" />
+                  <input value={orderForm.phone} onChange={event => setOrderForm({ ...orderForm, phone: event.target.value })} placeholder="Customer phone (optional)" className="border border-pink-200 rounded-lg px-3 py-2 text-sm" />
+                  <select required value={orderForm.productId} onChange={event => setOrderForm({ ...orderForm, productId: event.target.value })} className="border border-pink-200 rounded-lg px-3 py-2 text-sm">
+                    <option value="">Select product</option>
+                    {products.map(product => <option key={product.id} value={product.id}>{product.name} · {fmt(product.price)}</option>)}
+                  </select>
+                  <div className="flex gap-2">
+                    <input required type="number" min="1" step="1" value={orderForm.quantity} onChange={event => setOrderForm({ ...orderForm, quantity: event.target.value })} aria-label="Order quantity" className="w-24 border border-pink-200 rounded-lg px-3 py-2 text-sm" />
+                    <select value={orderForm.status} onChange={event => setOrderForm({ ...orderForm, status: event.target.value })} aria-label="Initial order status" className="flex-1 border border-pink-200 rounded-lg px-3 py-2 text-sm">
+                      <option value="pending">Pending</option>
+                      <option value="confirmed">Confirmed</option>
+                      <option value="completed">Completed</option>
+                    </select>
+                  </div>
+                </div>
+                {error && <p role="alert" className="text-sm text-red-600">{error}</p>}
+                <button type="submit" className="rounded-lg bg-pink-700 hover:bg-pink-800 text-white font-bold px-5 py-2.5">+ Record order</button>
+              </form>
+
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="font-semibold text-gray-800">Orders</h3>
+                  <span className="text-xs text-gray-500">{orders.length} recorded</span>
+                </div>
+                {orders.length === 0 ? (
+                  <p className="text-sm text-gray-500 py-2">No orders recorded yet.</p>
+                ) : (
+                  <ul className="divide-y divide-gray-100 max-h-56 overflow-y-auto">
+                    {orders.map(order => (
+                      <li key={order.id} className="py-3 flex flex-wrap items-center gap-2">
+                        <div className="flex-1 min-w-[180px]">
+                          <p className="text-sm font-medium text-gray-800">{order.customer || 'Customer'} · {order.productName}</p>
+                          <p className="text-xs text-gray-500">Qty {order.quantity} · {fmt(order.total)}{order.phone ? ` · ${order.phone}` : ''}</p>
+                        </div>
+                        <select value={order.status} onChange={event => onUpdateOrder(order.id, event.target.value)} aria-label={`Status for ${order.productName}`} className="border border-pink-200 rounded-md px-2 py-1.5 text-xs">
+                          <option value="pending">Pending</option>
+                          <option value="confirmed">Confirmed</option>
+                          <option value="completed">Completed</option>
+                        </select>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </div>
+            <button type="button" onClick={() => { setAuthenticated(false); setPassword(''); onClose(); }} className="text-sm text-gray-500 hover:text-pink-700">Sign out</button>
+          </div>
+        )}
+      </section>
+    </div>
+  );
+}
+
+// ── Category tabs ─────────────────────────────────────────────────────────────
+function CategoryTabs({ active, setActive }) {
+  return (
+    <div className="flex gap-2 overflow-x-auto hide-scrollbar px-4 py-3 bg-white border-b border-pink-50">
+      {CATEGORIES.map(c=>(
+        <button key={c.id} onClick={()=>setActive(c.id)}
+          className={`flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-semibold transition
+            ${active===c.id
+              ? 'bg-pink-600 text-white shadow-md'
+              : 'bg-pink-50 text-pink-700 hover:bg-pink-100'}`}
+        >
+          {c.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+// ── Product Card ──────────────────────────────────────────────────────────────
+function ProductCard({ p, onAdd, onOpen, wish, onWish }) {
+  const [imgOk, setImgOk] = useState(true);
+  const wished = wish.has(p.id);
+  return (
+    <div className="card bg-white rounded-2xl overflow-hidden shadow cursor-pointer fade-in"
+      onClick={()=>onOpen(p)}>
+      <div className="relative overflow-hidden" style={{paddingTop:'100%'}}>
+        {imgOk
+          ? <img src={p.image} alt={p.name}
+              className="product-img absolute inset-0 w-full h-full"
+              loading="lazy"
+              onError={()=>setImgOk(false)}
+            />
+          : <div className="absolute inset-0 bg-pink-50 flex items-center justify-center text-4xl">🎁</div>
+        }
+        {p.badge && (
+          <span className="absolute top-2 left-2 bg-pink-600 text-white text-xs font-bold px-2 py-0.5 rounded-full shadow">
+            {p.badge}
+          </span>
+        )}
+        <button
+          onClick={e=>{e.stopPropagation(); onWish(p.id);}}
+          className={`absolute top-2 right-2 w-8 h-8 rounded-full flex items-center justify-center text-lg shadow transition
+            ${wished ? 'bg-pink-600 text-white' : 'bg-white/80 hover:bg-pink-50'}`}
+        >
+          {wished ? '❤️' : '🤍'}
+        </button>
+      </div>
+      <div className="p-3">
+        <p className="text-xs text-pink-500 font-semibold uppercase tracking-wide mb-0.5">{p.category}</p>
+        <h3 className="font-semibold text-gray-800 text-sm leading-tight mb-1 line-clamp-2">{p.name}</h3>
+        <div className="flex items-center gap-1 mb-2">
+          <span className="text-yellow-400 text-xs">{starStr(p.rating)}</span>
+          <span className="text-gray-400 text-xs">({p.reviews})</span>
+        </div>
+        <div className="flex items-center justify-between">
+          <div>
+            <span className="text-pink-700 font-bold text-base">{fmt(p.price)}</span>
+            {p.originalPrice > p.price && (
+              <span className="text-gray-400 text-xs line-through ml-1">{fmt(p.originalPrice)}</span>
+            )}
+          </div>
+          <button
+            onClick={e=>{e.stopPropagation(); onAdd(p);}}
+            className="bg-pink-600 text-white text-xs font-bold px-3 py-1.5 rounded-full hover:bg-pink-700 transition active:scale-95"
+          >
+            + Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Product Modal ─────────────────────────────────────────────────────────────
+function ProductModal({ p, onClose, onAdd, wish, onWish }) {
+  const [imgOk, setImgOk] = useState(true);
+  const wished = wish.has(p.id);
+  const waMsg = `Hi Havie's Gift Shop! 👋\nI'd like to order:\n\n🛍️ *${p.name}*\nArticle: ${p.sku}\nPrice: ${fmt(p.price)} (${p.unit})\n\nPlease confirm availability & delivery details. Thank you!`;
+  useEffect(()=>{ document.body.style.overflow='hidden'; return()=>{ document.body.style.overflow=''; }; },[]);
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4"
+      style={{background:'rgba(0,0,0,0.6)'}}>
+      <div className="bg-white w-full sm:max-w-lg sm:rounded-3xl rounded-t-3xl max-h-[92vh] overflow-y-auto fade-in"
+        onClick={e=>e.stopPropagation()}>
+        {/* Header */}
+        <div className="sticky top-0 bg-white border-b border-pink-100 px-5 py-3 flex items-center justify-between rounded-t-3xl">
+          <span className="font-bold text-pink-700 font-serif">Product Detail</span>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-700 text-2xl leading-none">×</button>
+        </div>
+        {/* Image */}
+        <div className="relative bg-pink-50" style={{paddingTop:'75%'}}>
+          {imgOk
+            ? <img src={p.image} alt={p.name} className="absolute inset-0 w-full h-full object-cover" onError={()=>setImgOk(false)}/>
+            : <div className="absolute inset-0 flex items-center justify-center text-6xl">🎁</div>
+          }
+          <button
+            onClick={()=>onWish(p.id)}
+            className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center text-xl shadow
+              ${wished ? 'bg-pink-600 text-white' : 'bg-white/90'}`}
+          >
+            {wished ? '❤️' : '🤍'}
+          </button>
+          {p.badge && (
+            <span className="absolute top-3 left-3 bg-pink-600 text-white font-bold px-3 py-1 rounded-full text-sm shadow">
+              {p.badge}
+            </span>
+          )}
+        </div>
+        {/* Info */}
+        <div className="px-5 py-4">
+          <p className="text-pink-500 text-xs font-bold uppercase tracking-widest mb-1">{p.category} · {p.sku}</p>
+          <h2 className="font-serif text-xl font-bold text-gray-900 mb-1">{p.name}</h2>
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-yellow-400">{starStr(p.rating)}</span>
+            <span className="text-gray-500 text-sm">{p.rating}/5 · {p.reviews} reviews</span>
+          </div>
+          <div className="flex items-baseline gap-2 mb-3">
+            <span className="text-pink-700 text-2xl font-extrabold">{fmt(p.price)}</span>
+            {p.originalPrice > p.price && (
+              <span className="text-gray-400 line-through">{fmt(p.originalPrice)}</span>
+            )}
+            <span className="bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">
+              Save {Math.round((1-p.price/p.originalPrice)*100)}%
+            </span>
+          </div>
+          <p className="text-gray-500 text-sm mb-1"><strong>Unit:</strong> {p.unit}</p>
+          <p className="text-gray-600 text-sm leading-relaxed mb-4">{p.description}</p>
+
+          <div className="flex flex-col gap-3">
+            <a href={waLink(waMsg)} target="_blank" rel="noopener noreferrer"
+              className="btn-wa text-white font-bold py-3 rounded-2xl text-center flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition">
+              <span className="text-xl">💬</span> Order on WhatsApp
+            </a>
+            <button onClick={()=>{onAdd(p); onClose();}}
+              className="bg-pink-600 text-white font-bold py-3 rounded-2xl hover:bg-pink-700 transition">
+              🛒 Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+      {/* Backdrop close */}
+      <div className="fixed inset-0 -z-10" onClick={onClose}/>
+    </div>
+  );
+}
+
+// ── Cart Drawer ───────────────────────────────────────────────────────────────
+function CartDrawer({ cart, onRemove, total, onClose, onClear }) {
+  const waCartMsg = () => {
+    let msg = `Hi Havie's Gift Shop! 👋\nI'd like to order the following:\n\n`;
+    cart.forEach(x => {
+      msg += `🛍️ *${x.name}* × ${x.qty} = ${fmt(x.price * x.qty)}\n`;
+    });
+    msg += `\n💰 *Total: ${fmt(total)}*\n\nPlease confirm availability & delivery. Thank you!`;
+    return waLink(msg);
+  };
+  useEffect(()=>{ document.body.style.overflow='hidden'; return()=>{ document.body.style.overflow=''; }; },[]);
+  return (
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-end"
+      style={{background:'rgba(0,0,0,0.55)'}}>
+      <div className="bg-white w-full sm:max-w-sm h-full sm:h-auto sm:max-h-screen overflow-y-auto shadow-2xl flex flex-col fade-in">
+        <div className="sticky top-0 bg-pink-700 text-white px-5 py-4 flex items-center justify-between">
+          <span className="font-bold text-lg font-serif">🛒 Your Cart ({cart.length})</span>
+          <button onClick={onClose} className="text-white/80 hover:text-white text-2xl">×</button>
+        </div>
+        {cart.length===0
+          ? <div className="flex-1 flex flex-col items-center justify-center p-10 text-gray-400 gap-3">
+              <span className="text-5xl">🛍️</span>
+              <p className="font-semibold">Your cart is empty</p>
+              <button onClick={onClose} className="text-pink-600 font-bold hover:underline">Browse products</button>
+            </div>
+          : <>
+              <div className="flex-1 divide-y divide-pink-50 overflow-y-auto">
+                {cart.map(x=>(
+                  <div key={x.id} className="flex items-center gap-3 px-5 py-3">
+                    <img src={x.image} alt={x.name} className="w-14 h-14 object-cover rounded-xl border border-pink-100"
+                      onError={e=>{e.target.src='';e.target.style.background='#fdf2f8';}}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-sm text-gray-800 leading-tight line-clamp-2">{x.name}</p>
+                      <p className="text-pink-600 font-bold text-sm">{fmt(x.price)} × {x.qty}</p>
+                    </div>
+                    <button onClick={()=>onRemove(x.id)} className="text-red-400 hover:text-red-600 text-lg ml-2">🗑️</button>
+                  </div>
+                ))}
+              </div>
+              <div className="sticky bottom-0 bg-white border-t border-pink-100 p-5">
+                <div className="flex justify-between items-center mb-4">
+                  <span className="font-bold text-gray-700">Total</span>
+                  <span className="text-pink-700 font-extrabold text-xl">{fmt(total)}</span>
+                </div>
+                <a href={waCartMsg()} target="_blank" rel="noopener noreferrer"
+                  className="btn-wa text-white font-bold py-3 w-full rounded-2xl text-center flex items-center justify-center gap-2 shadow-lg mb-2">
+                  <span className="text-xl">💬</span> Order All on WhatsApp
+                </a>
+                <button onClick={onClear} className="w-full text-gray-400 text-sm hover:text-red-500 py-1">
+                  Clear cart
+                </button>
+              </div>
+            </>
+        }
+      </div>
+      <div className="fixed inset-0 -z-10" onClick={onClose}/>
+    </div>
+  );
+}
+
+// ── Hero Banner ───────────────────────────────────────────────────────────────
+function Hero() {
+  return (
+    <div className="relative overflow-hidden bg-gradient-to-br from-pink-700 via-pink-600 to-pink-400 text-white py-10 px-5">
+      <div className="relative z-10 max-w-xl mx-auto text-center">
+        <div className="inline-block bg-white/20 rounded-full px-4 py-1 text-sm font-semibold mb-3">
+          📍 Katani Road, Kenya
+        </div>
+        <h2 className="font-serif text-3xl sm:text-4xl font-extrabold mb-2 drop-shadow">
+          Havie's Gift Shop
+        </h2>
+        <p className="text-pink-100 text-base mb-4">
+          Gift ideas, custom gift branding, flower bouquets, and gift delivery services 🎁
+        </p>
+        <a href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hi Havie's Gift Shop! I'm browsing your online catalog and have a question.")}`}
+          target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-white text-pink-700 font-bold px-6 py-3 rounded-full shadow-xl hover:shadow-2xl transition hover:-translate-y-0.5"
+        >
+          <span className="text-xl">💬</span> Chat on WhatsApp
+        </a>
+      </div>
+      <div className="absolute -bottom-8 -right-8 w-40 h-40 bg-white/10 rounded-full"/>
+      <div className="absolute -top-6 -left-6 w-28 h-28 bg-white/10 rounded-full"/>
+    </div>
+  );
+}
+
+// ── Toast ─────────────────────────────────────────────────────────────────────
+function Toast({ msg }) {
+  return msg ? (
+    <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-pink-700 text-white px-5 py-2.5 rounded-full shadow-xl font-semibold text-sm fade-in">
+      {msg}
+    </div>
+  ) : null;
+}
+
+// ── Footer ────────────────────────────────────────────────────────────────────
+function Footer() {
+  return (
+    <footer className="bg-pink-800 text-white mt-16 py-10 px-5">
+      <div className="max-w-4xl mx-auto text-center">
+        <img src="public/products/flavie_logo.jpg" alt="Havie's logo"
+          className="w-16 h-16 rounded-full object-cover mx-auto mb-3 border-2 border-pink-300"
+          onError={e=>{e.target.style.display='none'}}
+        />
+        <h3 className="font-serif text-xl font-bold mb-1">Havie's Gift Shop</h3>
+        <p className="text-pink-300 text-sm mb-4">Katani Road, Kenya · Gift ideas, bouquets & delivery</p>
+        <div className="flex flex-wrap justify-center gap-4 text-sm mb-6">
+          <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-1 hover:text-yellow-300 transition">
+            <span>💬</span> +254 745 731 397
+          </a>
+          <a href="https://instagram.com/haviesgiftshop" target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-1 hover:text-yellow-300 transition">
+            <span>📸</span> @haviesgiftshop
+          </a>
+          <a href="https://www.facebook.com/profile.php?id=100063752151106" target="_blank" rel="noopener noreferrer"
+            className="flex items-center gap-1 hover:text-yellow-300 transition">
+            <span>f</span> Facebook
+          </a>
+        </div>
+        <p className="text-pink-400 text-xs">© 2025 Havie's Gift Shop. All rights reserved. Prices subject to change – confirm via WhatsApp.</p>
+      </div>
+    </footer>
+  );
+}
+
+// ── Main App ──────────────────────────────────────────────────────────────────
+function App() {
+  const [products, setProducts] = useState(() => {
+    try {
+      const saved = localStorage.getItem('havies_products');
+      const parsed = saved ? JSON.parse(saved) : null;
+      return Array.isArray(parsed) ? parsed : PRODUCTS;
+    } catch {
+      return PRODUCTS;
+    }
+  });
+  const [orders, setOrders] = useState(() => {
+    try {
+      const saved = localStorage.getItem('havies_orders');
+      const parsed = saved ? JSON.parse(saved) : null;
+      return Array.isArray(parsed) ? parsed : [];
+    } catch {
+      return [];
+    }
+  });
+  const [category, setCategory] = useState('all');
+  const [search, setSearch] = useState('');
+  const [sortBy, setSortBy] = useState('default');
+  const [modal, setModal] = useState(null);
+  const [showCart, setShowCart] = useState(false);
+  const [showAdmin, setShowAdmin] = useState(false);
+  const [toast, setToast] = useState('');
+  const timerRef = useRef(null);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('havies_products', JSON.stringify(products));
+    } catch (error) {
+      console.error('Could not save product catalog', error);
+    }
+  }, [products]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('havies_orders', JSON.stringify(orders));
+    } catch (error) {
+      console.error('Could not save order records', error);
+    }
+  }, [orders]);
+
+  useEffect(() => {
+    const productId = new URLSearchParams(window.location.search).get('product');
+    const sharedProduct = products.find(product => product.id === productId);
+    if (sharedProduct) setModal(sharedProduct);
+  }, []);
+
+  const { cart, add, remove, clear, total, count } = useCart();
+  const { wish, toggle: toggleWish } = useWish();
+
+  const showToast = msg => {
+    setToast(msg);
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => setToast(''), 2200);
+  };
+
+  const handleAdd = p => {
+    add(p);
+    showToast(`✅ ${p.name.split(' ').slice(0,4).join(' ')} added to cart!`);
+  };
+
+  const handleAddProduct = product => {
+    setProducts(current => [product, ...current]);
+    showToast(`${product.name} added to the catalog.`);
+  };
+
+  const handleDeleteProduct = product => {
+    if (!window.confirm(`Remove "${product.name}" from the catalog?`)) return;
+    setProducts(current => current.filter(item => item.id !== product.id));
+    if (modal?.id === product.id) setModal(null);
+    showToast(`${product.name} removed from the catalog.`);
+  };
+
+  const handleAddOrder = order => {
+    setOrders(current => [order, ...current]);
+    showToast('Order recorded.');
+  };
+
+  const handleUpdateOrder = (orderId, status) => {
+    setOrders(current => current.map(order => order.id === orderId ? { ...order, status } : order));
+  };
+
+  // Filter & sort
+  let display = products.filter(p => {
+    const matchCat = category === 'all' || p.category === category;
+    const q = search.toLowerCase();
+    const matchSearch = !q || p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q);
+    return matchCat && matchSearch;
+  });
+  if (sortBy === 'price-asc') display = [...display].sort((a,b)=>a.price-b.price);
+  if (sortBy === 'price-desc') display = [...display].sort((a,b)=>b.price-a.price);
+
+  return (
+    <div className="min-h-screen bg-pink-50">
+      <Header cartCount={count} onCart={()=>setShowCart(true)} onAdmin={()=>setShowAdmin(true)} search={search} setSearch={setSearch}/>
+      <Hero/>
+      <CategoryTabs active={category} setActive={setCategory}/>
+
+      {/* Sort bar */}
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+        <p className="text-sm text-gray-500 font-medium">
+          Showing <strong>{display.length}</strong> {category==='all'?'products':category} items
+        </p>
+        <select value={sortBy} onChange={e=>setSortBy(e.target.value)}
+          className="border border-pink-200 rounded-full px-3 py-1 text-sm text-gray-600 focus:outline-none focus:ring-2 focus:ring-pink-400">
+          <option value="default">Sort: Default</option>
+          <option value="price-asc">Price: Low → High</option>
+          <option value="price-desc">Price: High → Low</option>
+        </select>
+      </div>
+
+      {/* Grid */}
+      <main className="max-w-7xl mx-auto px-4 pb-16">
+        {display.length === 0
+          ? <div className="text-center py-20 text-gray-400">
+              <div className="text-5xl mb-3">🔍</div>
+              <p className="font-semibold text-lg">No products found</p>
+              <button onClick={()=>{setSearch(''); setCategory('all');}}
+                className="mt-4 text-pink-600 font-bold hover:underline">Clear filters</button>
+            </div>
+          : <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {display.map(p => (
+                <ProductCard key={p.id} p={p}
+                  onAdd={handleAdd}
+                  onOpen={setModal}
+                  wish={wish}
+                  onWish={toggleWish}
+                />
+              ))}
+            </div>
+        }
+      </main>
+
+      <Footer/>
+
+      {/* Modals */}
+      {modal && (
+        <ProductModal p={modal}
+          onClose={()=>setModal(null)}
+          onAdd={handleAdd}
+          wish={wish}
+          onWish={toggleWish}
+        />
+      )}
+      {showCart && (
+        <CartDrawer cart={cart} onRemove={remove} total={total}
+          onClose={()=>setShowCart(false)} onClear={clear}
+        />
+      )}
+      {showAdmin && (
+        <AdminPanel
+          products={products}
+          orders={orders}
+          onAddProduct={handleAddProduct}
+          onDeleteProduct={handleDeleteProduct}
+          onAddOrder={handleAddOrder}
+          onUpdateOrder={handleUpdateOrder}
+          onClose={()=>setShowAdmin(false)}
+        />
+      )}
+      <Toast msg={toast}/>
+
+      {/* Floating WhatsApp button */}
+      <a href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Hi Havie's Gift Shop! I'm browsing your catalog online.")}`}
+        target="_blank" rel="noopener noreferrer"
+        className="fixed bottom-6 right-5 z-40 btn-wa text-white w-14 h-14 rounded-full flex items-center justify-center text-2xl shadow-2xl hover:scale-110 transition spin-pulse"
+        title="Chat on WhatsApp">
+        💬
+      </a>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
