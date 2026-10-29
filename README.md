@@ -72,6 +72,6 @@ Or open directly in any browser:
 
 1. Push this project to a GitHub repository on the `main` or `master` branch.
 2. In the repository, open **Settings → Pages** and set the build and deployment source to **GitHub Actions**.
-3. The included workflow builds the site and deploys it automatically after each push. Its status and live URL appear under the repository's **Actions** tab.
+3. The included workflow builds both store pages and deploys them automatically after each push. Its status and live URL appear under the repository's **Actions** tab.
 
-The Vite build configures the correct base path for both project pages and `username.github.io` sites. Product images, the PWA manifest, and service worker use that path as well.
+The main store is at the repository root; the standalone Havie's Gift Shop is available at `/index-standalone.html`. The Vite build configures the correct base path for both project pages and `username.github.io` sites. Product images, the PWA manifest, and service worker use that path as well.

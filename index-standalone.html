@@ -66,6 +66,13 @@
 
 <script type="text/babel">
 const { useState, useEffect, useRef, useCallback } = React;
+const SITE_BASE_URL = '%BASE_URL%';
+function publicAssetUrl(path) {
+  if (location.protocol === 'file:' || /^(?:[a-z][a-z\d+.-]*:|\/\/)/i.test(path)) return path;
+  return `${SITE_BASE_URL}${path.replace(/^(?:public\/|\/)+/, '')}`;
+}
+const favicon = document.querySelector('link[rel="icon"]');
+if (favicon) favicon.href = publicAssetUrl('public/products/flavie_logo.jpg');
 
 // ── Data ──────────────────────────────────────────────────────────────────────
 const PRODUCTS = [
@@ -1890,7 +1897,7 @@ function Header({ cartCount, onCart, onAdmin, search, setSearch }) {
   return (
     <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-pink-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
-        <img src="public/products/flavie_logo.jpg" alt="Havie's Gift Shop Logo"
+        <img src={publicAssetUrl("public/products/flavie_logo.jpg")} alt="Havie's Gift Shop Logo"
           className="h-12 w-12 rounded-full object-cover border-2 border-pink-400 shadow flex-shrink-0"
           onError={e=>{e.target.style.display='none'}}
         />
@@ -2066,7 +2073,7 @@ function AdminPanel({ products, orders, onAddProduct, onDeleteProduct, onAddOrde
               <ul className="divide-y divide-gray-100 max-h-72 overflow-y-auto">
                 {products.map(product => (
                   <li key={product.id} className="flex items-center gap-3 py-2.5">
-                    <img src={product.image} alt="" className="w-10 h-10 rounded-md object-cover bg-pink-50" onError={event => { event.currentTarget.style.visibility = 'hidden'; }} />
+                    <img src={publicAssetUrl(product.image)} alt="" className="w-10 h-10 rounded-md object-cover bg-pink-50" onError={event => { event.currentTarget.style.visibility = 'hidden'; }} />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-800 truncate">{product.name}</p>
                       <p className="text-xs text-gray-500">{fmt(product.price)} · {product.category}</p>
@@ -2161,7 +2168,7 @@ function ProductCard({ p, onAdd, onOpen, wish, onWish }) {
       onClick={()=>onOpen(p)}>
       <div className="relative overflow-hidden" style={{paddingTop:'100%'}}>
         {imgOk
-          ? <img src={p.image} alt={p.name}
+          ? <img src={publicAssetUrl(p.image)} alt={p.name}
               className="product-img absolute inset-0 w-full h-full"
               loading="lazy"
               onError={()=>setImgOk(false)}
@@ -2226,7 +2233,7 @@ function ProductModal({ p, onClose, onAdd, wish, onWish }) {
         {/* Image */}
         <div className="relative bg-pink-50" style={{paddingTop:'75%'}}>
           {imgOk
-            ? <img src={p.image} alt={p.name} className="absolute inset-0 w-full h-full object-cover" onError={()=>setImgOk(false)}/>
+            ? <img src={publicAssetUrl(p.image)} alt={p.name} className="absolute inset-0 w-full h-full object-cover" onError={()=>setImgOk(false)}/>
             : <div className="absolute inset-0 flex items-center justify-center text-6xl">🎁</div>
           }
           <button
@@ -2309,7 +2316,7 @@ function CartDrawer({ cart, onRemove, total, onClose, onClear }) {
               <div className="flex-1 divide-y divide-pink-50 overflow-y-auto">
                 {cart.map(x=>(
                   <div key={x.id} className="flex items-center gap-3 px-5 py-3">
-                    <img src={x.image} alt={x.name} className="w-14 h-14 object-cover rounded-xl border border-pink-100"
+                    <img src={publicAssetUrl(x.image)} alt={x.name} className="w-14 h-14 object-cover rounded-xl border border-pink-100"
                       onError={e=>{e.target.src='';e.target.style.background='#fdf2f8';}}
                     />
                     <div className="flex-1 min-w-0">
@@ -2382,7 +2389,7 @@ function Footer() {
   return (
     <footer className="bg-pink-800 text-white mt-16 py-10 px-5">
       <div className="max-w-4xl mx-auto text-center">
-        <img src="public/products/flavie_logo.jpg" alt="Havie's logo"
+        <img src={publicAssetUrl("public/products/flavie_logo.jpg")} alt="Havie's logo"
           className="w-16 h-16 rounded-full object-cover mx-auto mb-3 border-2 border-pink-300"
           onError={e=>{e.target.style.display='none'}}
         />
