@@ -1,6 +1,6 @@
 export const CATEGORIES = [
   { id: 'all', name: 'All Products (Catalog)' },
-  { id: 'drinkwater', name: 'Stanley & Tumblers' },
+  { id: 'drinkwater', name: 'Drinkwater' },
   { id: 'bags', name: 'Bags & Handbags' },
   { id: 'beauty', name: 'Perfumes & Skincare' },
   { id: 'watches', name: 'Watches & Smartwatches' },

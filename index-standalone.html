@@ -1860,7 +1860,7 @@ const PRODUCTS = [
     "description": "Official Havie's Gift Shop catalog product (Article #129). Unit: Piece. Same-day dispatch in Nairobi & countrywide delivery via parcel service. Order via WhatsApp for fastest response."
   }
 ];
-const CATEGORIES = [{"id": "all", "label": "\ud83d\udecd\ufe0f All Products"}, {"id": "drinkwater", "label": "\ud83e\udd64 Drinkware"}, {"id": "bags", "label": "\ud83d\udc5c Bags & Purses"}, {"id": "footwear", "label": "\ud83d\udc5f Footwear"}, {"id": "watches", "label": "\u231a Watches"}, {"id": "accessories", "label": "\ud83d\udc8e Accessories"}, {"id": "beauty", "label": "\ud83d\udc84 Beauty"}, {"id": "home", "label": "\ud83c\udfe0 Home & Decor"}];
+const CATEGORIES = [{"id": "all", "label": "\ud83d\udecd\ufe0f All Products"}, {"id": "drinkwater", "label": "\ud83e\udd64 Drinkwater"}, {"id": "bags", "label": "\ud83d\udc5c Bags & Purses"}, {"id": "footwear", "label": "\ud83d\udc5f Footwear"}, {"id": "watches", "label": "\u231a Watches"}, {"id": "accessories", "label": "\ud83d\udc8e Accessories"}, {"id": "beauty", "label": "\ud83d\udc84 Beauty"}, {"id": "home", "label": "\ud83c\udfe0 Home & Decor"}];
 
 const WA_NUMBER = "254745731397";
 const SHOP_NAME = "Havie's Gift Shop";
@@ -2513,7 +2513,7 @@ function App() {
       if (!Array.isArray(parsed)) return PRODUCTS;
 
       const migratedProducts = parsed.map(product =>
-        product.category === 'drinkwater' ? { ...product, category: 'drinkwater' } : product
+        product.category === 'drinkware' ? { ...product, category: 'drinkwater' } : product
       );
       const newHandbags = PRODUCTS.filter(product =>
         ['shared-pu-leather-bag', 'shared-mini-push-lock-handbag'].includes(product.id)
