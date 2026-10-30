@@ -1,4 +1,4 @@
-const CACHE_NAME = 'havies-gift-shop-offline-v4';
+const CACHE_NAME = 'havies-gift-shop-offline-v5';
 const BASE_URL = new URL('./', self.registration.scope);
 const INDEX_URL = new URL('index.html', BASE_URL).href;
 const STANDALONE_URL = new URL('index-standalone.html', BASE_URL).href;
