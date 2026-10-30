@@ -29,6 +29,11 @@ img {
   transition: transform 0.4s ease;
 }
 
+.product-img.product-img-contain {
+  object-fit: contain;
+  background-color: #fff;
+}
+
 .card {
   transition: box-shadow 0.25s, transform 0.25s;
 }

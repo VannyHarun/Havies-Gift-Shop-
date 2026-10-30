@@ -180,7 +180,9 @@ export default function CartDrawer({
                       <img
                         src={getPublicAssetUrl(item.images ? item.images[0] : item.image)}
                         alt={item.name}
-                        className="w-18 h-22 object-cover object-top rounded-xl bg-stone-200 flex-shrink-0"
+                        className={`w-18 h-22 rounded-xl flex-shrink-0 ${
+                          item.imageFit === 'contain' ? 'object-contain bg-white' : 'object-cover object-top bg-stone-200'
+                        }`}
                       />
 
                       {/* Info & Quantity */}

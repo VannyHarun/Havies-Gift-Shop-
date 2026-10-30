@@ -193,7 +193,11 @@ export default function ProductCatalog({
                     <img
                       src={getPublicAssetUrl(product.images[0])}
                       alt={product.name}
-                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+                      className={`w-full h-full ${
+                        product.imageFit === 'contain'
+                          ? 'object-contain bg-white'
+                          : 'object-cover object-top transition-transform duration-700 group-hover:scale-105'
+                      }`}
                       loading="lazy"
                     />
 
@@ -202,7 +206,9 @@ export default function ProductCatalog({
                       <img
                         src={getPublicAssetUrl(product.images[1])}
                         alt={product.name}
-                        className="w-full h-full object-cover object-top absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                        className={`w-full h-full absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
+                          product.imageFit === 'contain' ? 'object-contain bg-white' : 'object-cover object-top'
+                        }`}
                         loading="lazy"
                       />
                     )}

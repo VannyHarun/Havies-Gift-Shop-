@@ -74,7 +74,9 @@ export default function WishlistDrawer({
                     <img
                       src={getPublicAssetUrl(product.images[0])}
                       alt={product.name}
-                      className="w-16 h-20 object-cover object-top rounded-xl bg-stone-200 flex-shrink-0"
+                      className={`w-16 h-20 rounded-xl flex-shrink-0 ${
+                        product.imageFit === 'contain' ? 'object-contain bg-white' : 'object-cover object-top bg-stone-200'
+                      }`}
                     />
 
                     <div className="flex-1 min-w-0 pr-2">

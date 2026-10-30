@@ -292,6 +292,7 @@ export const PRODUCTS = [
     "reviewsCount": 56,
     "badge": "",
     "badgeType": "",
+    "imageFit": "contain",
     "images": [
       "/products/article_011.jpg"
     ],
@@ -319,8 +320,9 @@ export const PRODUCTS = [
     "reviewsCount": 57,
     "badge": "",
     "badgeType": "",
+    "imageFit": "contain",
     "images": [
-      "/products/article_013.jpg"
+      "/products/article_012.jpg"
     ],
     "sizes": [
       "Standard / Piece"
@@ -346,8 +348,9 @@ export const PRODUCTS = [
     "reviewsCount": 58,
     "badge": "",
     "badgeType": "",
+    "imageFit": "contain",
     "images": [
-      "/products/article_014.jpg"
+      "/products/article_013.jpg"
     ],
     "sizes": [
       "Standard / Piece"

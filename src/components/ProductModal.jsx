@@ -79,7 +79,9 @@ export default function ProductModal({
                 <img
                   src={getPublicAssetUrl(product.images[activeImageIndex] || product.images[0])}
                   alt={product.name}
-                  className="w-full h-full object-cover object-top"
+                  className={`w-full h-full ${
+                    product.imageFit === 'contain' ? 'object-contain bg-white' : 'object-cover object-top'
+                  }`}
                 />
 
                 {product.badge && (
@@ -100,7 +102,13 @@ export default function ProductModal({
                         activeImageIndex === idx ? 'border-amber-500 ring-2 ring-amber-500/30' : 'border-transparent opacity-70 hover:opacity-100'
                       }`}
                     >
-                      <img src={getPublicAssetUrl(img)} alt="thumbnail" className="w-full h-full object-cover object-top" />
+                      <img
+                        src={getPublicAssetUrl(img)}
+                        alt="thumbnail"
+                        className={`w-full h-full ${
+                          product.imageFit === 'contain' ? 'object-contain bg-white' : 'object-cover object-top'
+                        }`}
+                      />
                     </button>
                   ))}
                 </div>

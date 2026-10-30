@@ -252,6 +252,7 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 23,
     "badge": "",
+    "imageFit": "contain",
     "image": "public/products/article_011.jpg",
     "sizes": [
       "Standard – Piece"
@@ -272,7 +273,8 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 24,
     "badge": "",
-    "image": "public/products/article_013.jpg",
+    "imageFit": "contain",
+    "image": "public/products/article_012.jpg",
     "sizes": [
       "Standard – Piece"
     ],
@@ -292,7 +294,8 @@ const PRODUCTS = [
     "rating": 4.9,
     "reviews": 25,
     "badge": "",
-    "image": "public/products/article_014.jpg",
+    "imageFit": "contain",
+    "image": "public/products/article_013.jpg",
     "sizes": [
       "Standard – Piece"
     ],
@@ -2158,7 +2161,14 @@ function AdminPanel({ products, orders, onAddProduct, onDeleteProduct, onAddOrde
               <ul className="divide-y divide-gray-100 max-h-72 overflow-y-auto">
                 {products.map(product => (
                   <li key={product.id} className="flex items-center gap-3 py-2.5">
-                    <img src={publicAssetUrl(product.image)} alt="" className="w-10 h-10 rounded-md object-cover bg-pink-50" onError={event => { event.currentTarget.style.visibility = 'hidden'; }} />
+                    <img
+                      src={publicAssetUrl(product.image)}
+                      alt=""
+                      className={`w-10 h-10 rounded-md ${
+                        product.imageFit === 'contain' ? 'object-contain bg-white' : 'object-cover bg-pink-50'
+                      }`}
+                      onError={event => { event.currentTarget.style.visibility = 'hidden'; }}
+                    />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-800 truncate">{product.name}</p>
                       <p className="text-xs text-gray-500">{fmt(product.price)} · {product.category}</p>
@@ -2254,7 +2264,7 @@ function ProductCard({ p, onAdd, onOpen, wish, onWish }) {
       <div className="relative overflow-hidden" style={{paddingTop:'100%'}}>
         {imgOk
           ? <img src={publicAssetUrl(p.image)} alt={p.name}
-              className="product-img absolute inset-0 w-full h-full"
+              className={`product-img absolute inset-0 w-full h-full ${p.imageFit === 'contain' ? 'product-img-contain' : ''}`}
               loading="lazy"
               onError={()=>setImgOk(false)}
             />
@@ -2318,7 +2328,14 @@ function ProductModal({ p, onClose, onAdd, wish, onWish }) {
         {/* Image */}
         <div className="relative bg-pink-50" style={{paddingTop:'75%'}}>
           {imgOk
-            ? <img src={publicAssetUrl(p.image)} alt={p.name} className="absolute inset-0 w-full h-full object-cover" onError={()=>setImgOk(false)}/>
+            ? <img
+                src={publicAssetUrl(p.image)}
+                alt={p.name}
+                className={`absolute inset-0 w-full h-full ${
+                  p.imageFit === 'contain' ? 'object-contain bg-white' : 'object-cover'
+                }`}
+                onError={()=>setImgOk(false)}
+              />
             : <div className="absolute inset-0 flex items-center justify-center text-6xl">🎁</div>
           }
           <button
@@ -2401,7 +2418,10 @@ function CartDrawer({ cart, onRemove, total, onClose, onClear }) {
               <div className="flex-1 divide-y divide-pink-50 overflow-y-auto">
                 {cart.map(x=>(
                   <div key={x.id} className="flex items-center gap-3 px-5 py-3">
-                    <img src={publicAssetUrl(x.image)} alt={x.name} className="w-14 h-14 object-cover rounded-xl border border-pink-100"
+                    <img src={publicAssetUrl(x.image)} alt={x.name}
+                      className={`w-14 h-14 rounded-xl border border-pink-100 ${
+                        x.imageFit === 'contain' ? 'object-contain bg-white' : 'object-cover'
+                      }`}
                       onError={e=>{e.target.src='';e.target.style.background='#fdf2f8';}}
                     />
                     <div className="flex-1 min-w-0">
@@ -2512,9 +2532,16 @@ function App() {
       const parsed = saved ? JSON.parse(saved) : null;
       if (!Array.isArray(parsed)) return PRODUCTS;
 
-      const migratedProducts = parsed.map(product =>
-        product.category === 'drinkware' ? { ...product, category: 'drinkwater' } : product
-      );
+      const migratedProducts = parsed.map(product => {
+        const catalogProduct = PRODUCTS.find(item => item.id === product.id);
+        const hasCorrectedImage = ['art-012', 'art-013'].includes(product.id);
+        return {
+          ...product,
+          ...(catalogProduct?.imageFit ? { imageFit: catalogProduct.imageFit } : {}),
+          ...(hasCorrectedImage && catalogProduct ? { image: catalogProduct.image } : {}),
+          ...(product.category === 'drinkware' ? { category: 'drinkwater' } : {})
+        };
+      });
       const newHandbags = PRODUCTS.filter(product =>
         ['shared-pu-leather-bag', 'shared-mini-push-lock-handbag'].includes(product.id)
       );
