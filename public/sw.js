@@ -9,7 +9,6 @@ const STATIC_ASSETS = [
   new URL('manifest.json', BASE_URL).href,
   new URL('manifest-standalone.json', BASE_URL).href,
   new URL('standalone.css', BASE_URL).href,
-  new URL('icon.svg', BASE_URL).href,
   new URL('havies-icon.svg', BASE_URL).href,
   new URL('vendor/react.production.min.js', BASE_URL).href,
   new URL('vendor/react-dom.production.min.js', BASE_URL).href,
