@@ -1932,7 +1932,7 @@ function useWish() {
 // ── Header ────────────────────────────────────────────────────────────────────
 function Header({ cartCount, onCart, onAdmin, onInstall, search, setSearch }) {
   return (
-    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-pink-100 shadow-sm">
+    <header className="bg-white/90 backdrop-blur border-b border-pink-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-3">
         <img src={publicAssetUrl("public/products/flavie_logo.jpg")} alt="Havie's Gift Shop Logo"
           className="h-12 w-12 rounded-full object-cover border-2 border-pink-400 shadow flex-shrink-0"
@@ -2715,7 +2715,26 @@ function App() {
 
   return (
     <div className="min-h-screen bg-pink-50">
-      <Header cartCount={count} onCart={()=>setShowCart(true)} onAdmin={()=>setShowAdmin(true)} onInstall={handleInstall} search={search} setSearch={setSearch}/>
+      <div className="sticky top-0 z-40">
+        <Header cartCount={count} onCart={()=>setShowCart(true)} onAdmin={()=>setShowAdmin(true)} onInstall={handleInstall} search={search} setSearch={setSearch}/>
+        {NOVEMBER_OFFER_ACTIVE && (
+          <div className="bg-gradient-to-r from-gray-950 via-pink-900 to-pink-700 px-4 py-2.5 text-center text-white shadow-md sm:flex sm:items-center sm:justify-center sm:gap-4">
+            <p className="text-sm font-extrabold uppercase tracking-wide sm:text-base">
+              🎉 This Month's Special: 20% OFF All Items
+              <span className="mt-0.5 block text-xs font-medium normal-case text-pink-100 sm:ml-2 sm:inline">
+                Black November · Code <strong className="rounded bg-white/15 px-1.5 py-0.5 font-mono text-amber-200">NOV20</strong>
+              </span>
+            </p>
+            <button
+              type="button"
+              onClick={() => setShowNovemberOffer(true)}
+              className="mt-2 rounded-full bg-white px-4 py-1.5 text-xs font-bold text-pink-800 transition hover:bg-pink-100 sm:mt-0"
+            >
+              View Offer
+            </button>
+          </div>
+        )}
+      </div>
       <div className={`px-4 py-1.5 text-center text-xs font-semibold ${!isOnline ? 'bg-amber-100 text-amber-900' : 'bg-pink-100 text-pink-800'}`} role="status" aria-live="polite">
         {offlineSetupFailed
           ? 'Offline setup is unavailable here. Open the hosted shop online in a supported browser to save it.'
@@ -2723,16 +2742,6 @@ function App() {
           ? offlineReady ? 'Offline mode — saved catalog is ready.' : 'Offline mode — open the shop online once to save it for offline use.'
           : offlineReady ? 'Offline catalog ready on this device.' : 'Preparing offline catalog — keep the shop open while it saves.'}
       </div>
-      {NOVEMBER_OFFER_ACTIVE && (
-        <div className="bg-gradient-to-r from-gray-950 via-pink-900 to-pink-700 px-4 py-3 text-center text-white shadow-md">
-          <p className="text-sm font-extrabold uppercase tracking-wide sm:text-base">
-            🎉 This Month's Special Offer: 20% OFF All Items
-          </p>
-          <p className="mt-0.5 text-xs font-medium text-pink-100 sm:text-sm">
-            Black November — November only! Use code <strong className="rounded bg-white/15 px-1.5 py-0.5 font-mono text-amber-200">NOV20</strong>
-          </p>
-        </div>
-      )}
       <Hero/>
       <CategoryTabs active={category} setActive={setCategory}/>
 
@@ -2783,7 +2792,7 @@ function App() {
             role="dialog"
             aria-modal="true"
             aria-labelledby="november-offer-title"
-            className="relative w-full max-w-md overflow-hidden rounded-3xl border border-pink-200 bg-white text-center shadow-2xl"
+            className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-pink-200 bg-white text-center shadow-2xl"
             onClick={event => event.stopPropagation()}
           >
             <button
