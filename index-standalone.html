@@ -1869,6 +1869,7 @@ const WA_NUMBER = "254745731397";
 const SHOP_NAME = "Havie's Gift Shop";
 const SHOP_PHONE = "+254 745 731 397";
 const SHOP_INSTA = "@haviesgiftshop";
+const NOVEMBER_OFFER_ACTIVE = new Date().getFullYear() === 2026 && new Date().getMonth() === 10;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function fmt(n) { return "KES " + Number(n).toLocaleString(); }
@@ -2568,8 +2569,22 @@ function App() {
   const [modal, setModal] = useState(null);
   const [showCart, setShowCart] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
+  const [showNovemberOffer, setShowNovemberOffer] = useState(false);
   const [toast, setToast] = useState('');
   const timerRef = useRef(null);
+
+  useEffect(() => {
+    if (!NOVEMBER_OFFER_ACTIVE) return undefined;
+
+    try {
+      if (sessionStorage.getItem('havies-november-offer-dismissed-v1') === 'true') return undefined;
+    } catch (error) {
+      console.error('Could not read November offer dismissal state', error);
+    }
+
+    const timer = window.setTimeout(() => setShowNovemberOffer(true), 500);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const handleOnline = () => setIsOnline(true);
@@ -2636,6 +2651,20 @@ function App() {
     timerRef.current = setTimeout(() => setToast(''), 2200);
   };
 
+  const closeNovemberOffer = () => {
+    setShowNovemberOffer(false);
+    try {
+      sessionStorage.setItem('havies-november-offer-dismissed-v1', 'true');
+    } catch (error) {
+      console.error('Could not save November offer dismissal state', error);
+    }
+  };
+
+  const shopNovemberOffer = () => {
+    closeNovemberOffer();
+    document.getElementById('catalog')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const handleInstall = async () => {
     if (!installPrompt) {
       showToast('Use your browser menu and choose Install app or Add to Home Screen.');
@@ -2694,6 +2723,16 @@ function App() {
           ? offlineReady ? 'Offline mode — saved catalog is ready.' : 'Offline mode — open the shop online once to save it for offline use.'
           : offlineReady ? 'Offline catalog ready on this device.' : 'Preparing offline catalog — keep the shop open while it saves.'}
       </div>
+      {NOVEMBER_OFFER_ACTIVE && (
+        <div className="bg-gradient-to-r from-gray-950 via-pink-900 to-pink-700 px-4 py-3 text-center text-white shadow-md">
+          <p className="text-sm font-extrabold uppercase tracking-wide sm:text-base">
+            🎉 This Month's Special Offer: 20% OFF All Items
+          </p>
+          <p className="mt-0.5 text-xs font-medium text-pink-100 sm:text-sm">
+            Black November — November only! Use code <strong className="rounded bg-white/15 px-1.5 py-0.5 font-mono text-amber-200">NOV20</strong>
+          </p>
+        </div>
+      )}
       <Hero/>
       <CategoryTabs active={category} setActive={setCategory}/>
 
@@ -2711,7 +2750,7 @@ function App() {
       </div>
 
       {/* Grid */}
-      <main className="max-w-7xl mx-auto px-4 pb-16">
+      <main id="catalog" className="max-w-7xl mx-auto px-4 pb-16">
         {display.length === 0
           ? <div className="text-center py-20 text-gray-400">
               <div className="text-5xl mb-3">🔍</div>
@@ -2735,6 +2774,61 @@ function App() {
       <Footer/>
 
       {/* Modals */}
+      {showNovemberOffer && NOVEMBER_OFFER_ACTIVE && (
+        <div
+          className="fixed inset-0 z-[70] flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm"
+          onClick={closeNovemberOffer}
+        >
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="november-offer-title"
+            className="relative w-full max-w-md overflow-hidden rounded-3xl border border-pink-200 bg-white text-center shadow-2xl"
+            onClick={event => event.stopPropagation()}
+          >
+            <button
+              type="button"
+              onClick={closeNovemberOffer}
+              aria-label="Close November offer"
+              className="absolute right-3 top-3 z-10 rounded-full bg-white/20 px-3 py-1 text-2xl leading-none text-white hover:bg-white/30"
+            >
+              ×
+            </button>
+            <div className="bg-gradient-to-br from-gray-950 via-pink-950 to-pink-600 px-6 pb-7 pt-8 text-white">
+              <div className="mb-3 text-4xl" aria-hidden="true">🎁</div>
+              <p className="mb-2 inline-block rounded-full border border-pink-200/40 bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-pink-100">
+                This Month's Special Offer
+              </p>
+              <h2 id="november-offer-title" className="font-serif text-4xl font-black uppercase leading-tight sm:text-5xl">
+                Black <span className="block text-pink-300">November</span>
+              </h2>
+              <p className="mt-2 text-5xl font-black tracking-tight text-amber-300 sm:text-6xl">20% OFF</p>
+              <p className="mt-2 text-sm font-medium text-pink-50">
+                On all items — this November only!
+              </p>
+            </div>
+            <div className="space-y-4 p-6">
+              <p className="text-sm text-gray-600">
+                Use code <strong className="rounded-md bg-pink-50 px-2 py-1 font-mono text-base font-bold text-pink-800">NOV20</strong> when ordering.
+              </p>
+              <button
+                type="button"
+                onClick={shopNovemberOffer}
+                className="w-full rounded-xl bg-pink-700 px-5 py-3.5 text-sm font-bold text-white transition hover:bg-pink-800"
+              >
+                Shop the offer →
+              </button>
+              <button
+                type="button"
+                onClick={closeNovemberOffer}
+                className="w-full py-1 text-xs font-medium text-gray-500 hover:text-gray-800"
+              >
+                Continue browsing
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
       {modal && (
         <ProductModal p={modal}
           onClose={()=>setModal(null)}
