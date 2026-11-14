@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Sparkles, MessageCircle, Phone, Mail, MapPin, Send, Check, Heart, Facebook } from 'lucide-react';
 import confetti from 'canvas-confetti';
+import { isNovemberOfferActive } from '../utils/promotions';
 
 export default function Footer({ storeConfig, onInstallPwa }) {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const promoActive = isNovemberOfferActive();
 
   const handleSubscribe = (e) => {
     e.preventDefault();
@@ -42,6 +44,14 @@ export default function Footer({ storeConfig, onInstallPwa }) {
               <span className="px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-300">
                 WhatsApp Commerce
               </span>
+              <a
+                href={storeConfig?.websiteUrl || 'https://vannyharun.github.io/Havies-Gift-Shop-/'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-200"
+              >
+                <span>Live Shop</span>
+              </a>
               <a
                 href={storeConfig?.socials?.facebookUrl || 'https://www.facebook.com/profile.php?id=100063752151106'}
                 target="_blank"
@@ -85,7 +95,9 @@ export default function Footer({ storeConfig, onInstallPwa }) {
             {subscribed ? (
               <div className="p-3 bg-emerald-950/70 border border-emerald-500/40 rounded-xl text-xs text-emerald-300 flex items-center gap-2">
                 <Check className="w-4 h-4 text-emerald-400" />
-                <span>You're in! Use code <strong className="text-white font-mono">LUXE20</strong> for 20% off.</span>
+                <span>{promoActive
+                  ? <>You're in! Use code <strong className="text-white font-mono">NOV20</strong> for 20% off this November.</>
+                  : "You're in! Thanks for joining our gift-loving community."}</span>
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="space-y-2">

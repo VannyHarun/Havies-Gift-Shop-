@@ -18,10 +18,13 @@ import WhatsAppInquiryWidget from './components/WhatsAppInquiryWidget';
 import PWAInstallPrompt from './components/PWAInstallPrompt';
 import AdminSettingsModal from './components/AdminSettingsModal';
 import Footer from './components/Footer';
+import NovemberOfferModal from './components/NovemberOfferModal';
+import { isNovemberOfferActive } from './utils/promotions';
 
 export default function App() {
   const [storeConfig, setStoreConfig] = useState(() => getStoreConfig());
   const [products] = useState(PRODUCTS);
+  const [novemberOfferOpen, setNovemberOfferOpen] = useState(false);
   
   // Cart state persisted to localStorage
   const [cart, setCart] = useState(() => {
@@ -50,6 +53,21 @@ export default function App() {
   const [adminOpen, setAdminOpen] = useState(false);
   const [pwaModalOpen, setPwaModalOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+
+  useEffect(() => {
+    if (!isNovemberOfferActive()) return undefined;
+
+    try {
+      if (window.sessionStorage.getItem('november-offer-dismissed') === 'true') {
+        return undefined;
+      }
+    } catch (error) {
+      console.warn('Could not read November offer dismissal state', error);
+    }
+
+    const timer = window.setTimeout(() => setNovemberOfferOpen(true), 500);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   // Sync cart & wishlist to localStorage
   useEffect(() => {
@@ -176,6 +194,20 @@ export default function App() {
     if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
+  const closeNovemberOffer = () => {
+    setNovemberOfferOpen(false);
+    try {
+      window.sessionStorage.setItem('november-offer-dismissed', 'true');
+    } catch (error) {
+      console.warn('Could not save November offer dismissal state', error);
+    }
+  };
+
+  const handleShopNovemberOffer = () => {
+    closeNovemberOffer();
+    scrollToCatalog();
+  };
+
   const totalCartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -245,6 +277,12 @@ export default function App() {
       {/* Floating WhatsApp Quick Action Widget */}
       <WhatsAppInquiryWidget 
         storeConfig={storeConfig} 
+      />
+
+      <NovemberOfferModal
+        isOpen={novemberOfferOpen}
+        onClose={closeNovemberOffer}
+        onShop={handleShopNovemberOffer}
       />
 
       {/* Product Detail Modal */}

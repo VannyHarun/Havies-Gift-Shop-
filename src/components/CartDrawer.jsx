@@ -17,6 +17,7 @@ import {
 import confetti from 'canvas-confetti';
 import { createWhatsAppLink, generateCartOrderMessage } from '../utils/whatsapp';
 import { getPublicAssetUrl } from '../utils/assetPaths';
+import { isNovemberOfferActive } from '../utils/promotions';
 
 export default function CartDrawer({ 
   isOpen, 
@@ -50,7 +51,7 @@ export default function CartDrawer({
   
   let discountAmount = 0;
   if (appliedPromo) {
-    if (appliedPromo.code === 'LUXE20') {
+    if (appliedPromo.code === 'NOV20' && isNovemberOfferActive()) {
       discountAmount = subtotal * 0.20;
     } else if (appliedPromo.code === 'VIPSTYLE') {
       discountAmount = subtotal * 0.15;
@@ -69,8 +70,8 @@ export default function CartDrawer({
     setPromoError('');
     const cleanCode = promoCode.trim().toUpperCase();
 
-    if (cleanCode === 'LUXE20') {
-      setAppliedPromo({ code: 'LUXE20', label: '20% Off Apparel Discount' });
+    if (cleanCode === 'NOV20' && isNovemberOfferActive()) {
+      setAppliedPromo({ code: cleanCode, label: '20% Off November Promotion' });
       confetti({ particleCount: 60, spread: 55, origin: { y: 0.7 } });
     } else if (cleanCode === 'FREESHIP') {
       setAppliedPromo({ code: 'FREESHIP', label: 'Complimentary Free Shipping' });
@@ -78,8 +79,10 @@ export default function CartDrawer({
     } else if (cleanCode === 'VIPSTYLE') {
       setAppliedPromo({ code: 'VIPSTYLE', label: '15% Off VIP Member Discount' });
       confetti({ particleCount: 60, spread: 55, origin: { y: 0.7 } });
+    } else if (cleanCode === 'NOV20') {
+      setPromoError('NOV20 is valid during November only.');
     } else {
-      setPromoError('Invalid coupon code. Try LUXE20 or FREESHIP');
+      setPromoError('Invalid coupon code. Try NOV20 or FREESHIP');
     }
   };
 
@@ -247,7 +250,7 @@ export default function CartDrawer({
                       <Tag className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-stone-400" />
                       <input
                         type="text"
-                        placeholder="Discount code (e.g. LUXE20)"
+                        placeholder="Discount code (e.g. NOV20)"
                         value={promoCode}
                         onChange={(e) => setPromoCode(e.target.value)}
                         className="w-full pl-9 pr-3 py-2 text-xs rounded-xl border border-stone-200 bg-stone-50 uppercase focus:outline-none focus:ring-1 focus:ring-amber-500 font-mono"

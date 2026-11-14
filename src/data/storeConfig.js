@@ -4,6 +4,7 @@ export const DEFAULT_STORE_CONFIG = {
   phone: "+254 745 731 397",
   whatsappNumber: "254745731397",
   email: "orders@flaviesgiftshop.co.ke",
+  websiteUrl: "https://vannyharun.github.io/Havies-Gift-Shop-/",
   currency: "KES",
   currencyCode: "KES",
   address: "Katani Road, Kenya",
@@ -17,7 +18,7 @@ export const DEFAULT_STORE_CONFIG = {
     facebookUrl: "https://www.facebook.com/profile.php?id=100063752151106"
   },
   promoBanners: [
-    { id: 1, text: "FLAVIE FLASH: Use code FLAVIE10 for 10% off your first gift order", code: "FLAVIE10", discount: 10 },
+    { id: 1, text: "BLACK NOVEMBER: 20% OFF on all items this November only", code: "NOV20", discount: 20 },
     { id: 2, text: "Gift Delivery Available — Contact Us to Arrange Delivery", code: "DELIVERY", discount: 0 },
     { id: 3, text: "Fast Countrywide Dispatch via Fargo / G4S / EasyCoach / Speedaf", code: "PARCEL", discount: 0 }
   ],
@@ -26,7 +27,7 @@ export const DEFAULT_STORE_CONFIG = {
     "🚚 Gift Delivery Services Available — Contact Us to Arrange Delivery",
     "💬 Instant WhatsApp Ordering: 0745 731 397",
     "🌸 Flower Bouquets, Gift Ideas & Custom Gift Branding",
-    "⭐ Rated 4.9/5 by 4,200+ Happy Customers across Kenya"
+    "⭐ Trusted by happy customers across Kenya"
   ]
 };
 
